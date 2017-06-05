@@ -3,25 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Test : MonoBehaviour {
+    public Animator PlayerAnimator;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.name == "Sword")
+        if(other.name == "Sword")
         {
-            Debug.Log("Attack");
+            PlayerAnimator.SetTrigger("Attack");
         }
         if (other.name == "Shield")
         {
-            Debug.Log("Defens");
+            PlayerAnimator.SetTrigger("Defence");
+
         }
     }
 }
