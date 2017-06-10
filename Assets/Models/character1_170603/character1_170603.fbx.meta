@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 05080df94e40902498b52a8dd6cfe14a
-timeCreated: 1496471205
+timeCreated: 1497093754
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -228,10 +228,14 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
+      improve retargeting quality.\n\t'Ashikubi_R' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\t'Ashikubi_L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -418,7 +422,7 @@ ModelImporter:
     serializedVersion: 2
     human: []
     skeleton: []
-    armTwist: 0.5
+    armTwist: 0.496
     foreArmTwist: 0.5
     upperLegTwist: 0.5
     legTwist: 0.5
@@ -428,7 +432,7 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
