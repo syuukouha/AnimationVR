@@ -213,7 +213,9 @@ ModelImporter:
     4300050: kosi_back
     4300052: Armor_kosi_L1
     4300054: Armor_kosi_L2
-    7400000: Take 001
+    7400000: DefenceStart
+    7400002: Defence
+    7400004: DefenceEnd
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -237,7 +239,463 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: DefenceStart
+      takeName: Take 001
+      firstFrame: 120
+      lastFrame: 209
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ambientLight1
+        weight: 1
+      - path: hip
+        weight: 1
+      - path: hip/body
+        weight: 1
+      - path: hip/body/Armor_chest
+        weight: 1
+      - path: hip/body/Armor_kosi_L1
+        weight: 1
+      - path: hip/body/Armor_kosi_L2
+        weight: 1
+      - path: hip/body/armor_kosi_R
+        weight: 1
+      - path: hip/body/kosi_back
+        weight: 1
+      - path: hip/leg_L
+        weight: 1
+      - path: hip/leg_L/hiza_L
+        weight: 1
+      - path: hip/leg_L/hiza_L/Ashikubi_L
+        weight: 1
+      - path: hip/leg_L/hiza_L/Ashikubi_L/Tsumasaki_L
+        weight: 1
+      - path: hip/leg_L/hiza_L/Ashikubi_L/tsumasaki_L
+        weight: 1
+      - path: hip/leg_L/hiza_L/hiza_L 1
+        weight: 1
+      - path: hip/leg_L/hiza_L/polySurface7
+        weight: 1
+      - path: hip/leg_L/Leg_L
+        weight: 1
+      - path: hip/leg_R
+        weight: 1
+      - path: hip/leg_R/hiza_R
+        weight: 1
+      - path: hip/leg_R/hiza_R/Ashikubi_R
+        weight: 1
+      - path: hip/leg_R/hiza_R/Ashikubi_R/Tsumasaki_R
+        weight: 1
+      - path: hip/leg_R/hiza_R/Ashikubi_R/tsumasaki_R
+        weight: 1
+      - path: hip/leg_R/hiza_R/hiza_R 1
+        weight: 1
+      - path: hip/leg_R/hiza_R/polySurface6
+        weight: 1
+      - path: hip/leg_R/Leg_R
+        weight: 1
+      - path: hip/west
+        weight: 1
+      - path: hip/west/chest
+        weight: 1
+      - path: hip/west/chest/neck
+        weight: 1
+      - path: hip/west/chest/neck/head
+        weight: 1
+      - path: hip/west/chest/neck/head/hair1
+        weight: 1
+      - path: hip/west/chest/neck/head/hair1/hair1 1
+        weight: 1
+      - path: hip/west/chest/neck/head/hair1/joint26
+        weight: 1
+      - path: hip/west/chest/neck/head/hair2
+        weight: 1
+      - path: hip/west/chest/neck/head/hair2/hair2 1
+        weight: 1
+      - path: hip/west/chest/neck/head/hair2/joint28
+        weight: 1
+      - path: hip/west/chest/neck/head/hair3
+        weight: 1
+      - path: hip/west/chest/neck/head/hair3/hair3 1
+        weight: 1
+      - path: hip/west/chest/neck/head/hair3/joint24
+        weight: 1
+      - path: hip/west/chest/neck/head/head 1
+        weight: 1
+      - path: hip/west/chest/neck/head/head 1/met1
+        weight: 1
+      - path: hip/west/chest/neck/head/head 1/met1/met3
+        weight: 1
+      - path: hip/west/chest/neck/head/head 1/met1/met3/met2
+        weight: 1
+      - path: hip/west/chest/neck/head/nose
+        weight: 1
+      - path: hip/west/chest/sholder_L
+        weight: 1
+      - path: hip/west/chest/sholder_L/Arm_L
+        weight: 1
+      - path: hip/west/chest/sholder_L/hiji_L
+        weight: 1
+      - path: hip/west/chest/sholder_L/hiji_L/hand_L
+        weight: 1
+      - path: hip/west/chest/sholder_L/hiji_L/hand_L/sheld
+        weight: 1
+      - path: hip/west/chest/sholder_L/hiji_L/polySurface4
+        weight: 1
+      - path: hip/west/chest/sholder_R
+        weight: 1
+      - path: hip/west/chest/sholder_R/Arm_R
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R/hand_R
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R/hand_R/sword
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R/hiji_R 1
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R/polySurface4 1
+        weight: 1
+      - path: LIK
+        weight: 1
+      - path: LIK/ikHandle2
+        weight: 1
+      - path: LIK/ikHandle4
+        weight: 1
+      - path: RIK
+        weight: 1
+      - path: RIK/ikHandle1
+        weight: 1
+      - path: RIK/ikHandle3
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: Defence
+      takeName: Take 001
+      firstFrame: 210
+      lastFrame: 211
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ambientLight1
+        weight: 1
+      - path: hip
+        weight: 1
+      - path: hip/body
+        weight: 1
+      - path: hip/body/Armor_chest
+        weight: 1
+      - path: hip/body/Armor_kosi_L1
+        weight: 1
+      - path: hip/body/Armor_kosi_L2
+        weight: 1
+      - path: hip/body/armor_kosi_R
+        weight: 1
+      - path: hip/body/kosi_back
+        weight: 1
+      - path: hip/leg_L
+        weight: 1
+      - path: hip/leg_L/hiza_L
+        weight: 1
+      - path: hip/leg_L/hiza_L/Ashikubi_L
+        weight: 1
+      - path: hip/leg_L/hiza_L/Ashikubi_L/Tsumasaki_L
+        weight: 1
+      - path: hip/leg_L/hiza_L/Ashikubi_L/tsumasaki_L
+        weight: 1
+      - path: hip/leg_L/hiza_L/hiza_L 1
+        weight: 1
+      - path: hip/leg_L/hiza_L/polySurface7
+        weight: 1
+      - path: hip/leg_L/Leg_L
+        weight: 1
+      - path: hip/leg_R
+        weight: 1
+      - path: hip/leg_R/hiza_R
+        weight: 1
+      - path: hip/leg_R/hiza_R/Ashikubi_R
+        weight: 1
+      - path: hip/leg_R/hiza_R/Ashikubi_R/Tsumasaki_R
+        weight: 1
+      - path: hip/leg_R/hiza_R/Ashikubi_R/tsumasaki_R
+        weight: 1
+      - path: hip/leg_R/hiza_R/hiza_R 1
+        weight: 1
+      - path: hip/leg_R/hiza_R/polySurface6
+        weight: 1
+      - path: hip/leg_R/Leg_R
+        weight: 1
+      - path: hip/west
+        weight: 1
+      - path: hip/west/chest
+        weight: 1
+      - path: hip/west/chest/neck
+        weight: 1
+      - path: hip/west/chest/neck/head
+        weight: 1
+      - path: hip/west/chest/neck/head/hair1
+        weight: 1
+      - path: hip/west/chest/neck/head/hair1/hair1 1
+        weight: 1
+      - path: hip/west/chest/neck/head/hair1/joint26
+        weight: 1
+      - path: hip/west/chest/neck/head/hair2
+        weight: 1
+      - path: hip/west/chest/neck/head/hair2/hair2 1
+        weight: 1
+      - path: hip/west/chest/neck/head/hair2/joint28
+        weight: 1
+      - path: hip/west/chest/neck/head/hair3
+        weight: 1
+      - path: hip/west/chest/neck/head/hair3/hair3 1
+        weight: 1
+      - path: hip/west/chest/neck/head/hair3/joint24
+        weight: 1
+      - path: hip/west/chest/neck/head/head 1
+        weight: 1
+      - path: hip/west/chest/neck/head/head 1/met1
+        weight: 1
+      - path: hip/west/chest/neck/head/head 1/met1/met3
+        weight: 1
+      - path: hip/west/chest/neck/head/head 1/met1/met3/met2
+        weight: 1
+      - path: hip/west/chest/neck/head/nose
+        weight: 1
+      - path: hip/west/chest/sholder_L
+        weight: 1
+      - path: hip/west/chest/sholder_L/Arm_L
+        weight: 1
+      - path: hip/west/chest/sholder_L/hiji_L
+        weight: 1
+      - path: hip/west/chest/sholder_L/hiji_L/hand_L
+        weight: 1
+      - path: hip/west/chest/sholder_L/hiji_L/hand_L/sheld
+        weight: 1
+      - path: hip/west/chest/sholder_L/hiji_L/polySurface4
+        weight: 1
+      - path: hip/west/chest/sholder_R
+        weight: 1
+      - path: hip/west/chest/sholder_R/Arm_R
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R/hand_R
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R/hand_R/sword
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R/hiji_R 1
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R/polySurface4 1
+        weight: 1
+      - path: LIK
+        weight: 1
+      - path: LIK/ikHandle2
+        weight: 1
+      - path: LIK/ikHandle4
+        weight: 1
+      - path: RIK
+        weight: 1
+      - path: RIK/ikHandle1
+        weight: 1
+      - path: RIK/ikHandle3
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: DefenceEnd
+      takeName: Take 001
+      firstFrame: 212
+      lastFrame: 300
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ambientLight1
+        weight: 1
+      - path: hip
+        weight: 1
+      - path: hip/body
+        weight: 1
+      - path: hip/body/Armor_chest
+        weight: 1
+      - path: hip/body/Armor_kosi_L1
+        weight: 1
+      - path: hip/body/Armor_kosi_L2
+        weight: 1
+      - path: hip/body/armor_kosi_R
+        weight: 1
+      - path: hip/body/kosi_back
+        weight: 1
+      - path: hip/leg_L
+        weight: 1
+      - path: hip/leg_L/hiza_L
+        weight: 1
+      - path: hip/leg_L/hiza_L/Ashikubi_L
+        weight: 1
+      - path: hip/leg_L/hiza_L/Ashikubi_L/Tsumasaki_L
+        weight: 1
+      - path: hip/leg_L/hiza_L/Ashikubi_L/tsumasaki_L
+        weight: 1
+      - path: hip/leg_L/hiza_L/hiza_L 1
+        weight: 1
+      - path: hip/leg_L/hiza_L/polySurface7
+        weight: 1
+      - path: hip/leg_L/Leg_L
+        weight: 1
+      - path: hip/leg_R
+        weight: 1
+      - path: hip/leg_R/hiza_R
+        weight: 1
+      - path: hip/leg_R/hiza_R/Ashikubi_R
+        weight: 1
+      - path: hip/leg_R/hiza_R/Ashikubi_R/Tsumasaki_R
+        weight: 1
+      - path: hip/leg_R/hiza_R/Ashikubi_R/tsumasaki_R
+        weight: 1
+      - path: hip/leg_R/hiza_R/hiza_R 1
+        weight: 1
+      - path: hip/leg_R/hiza_R/polySurface6
+        weight: 1
+      - path: hip/leg_R/Leg_R
+        weight: 1
+      - path: hip/west
+        weight: 1
+      - path: hip/west/chest
+        weight: 1
+      - path: hip/west/chest/neck
+        weight: 1
+      - path: hip/west/chest/neck/head
+        weight: 1
+      - path: hip/west/chest/neck/head/hair1
+        weight: 1
+      - path: hip/west/chest/neck/head/hair1/hair1 1
+        weight: 1
+      - path: hip/west/chest/neck/head/hair1/joint26
+        weight: 1
+      - path: hip/west/chest/neck/head/hair2
+        weight: 1
+      - path: hip/west/chest/neck/head/hair2/hair2 1
+        weight: 1
+      - path: hip/west/chest/neck/head/hair2/joint28
+        weight: 1
+      - path: hip/west/chest/neck/head/hair3
+        weight: 1
+      - path: hip/west/chest/neck/head/hair3/hair3 1
+        weight: 1
+      - path: hip/west/chest/neck/head/hair3/joint24
+        weight: 1
+      - path: hip/west/chest/neck/head/head 1
+        weight: 1
+      - path: hip/west/chest/neck/head/head 1/met1
+        weight: 1
+      - path: hip/west/chest/neck/head/head 1/met1/met3
+        weight: 1
+      - path: hip/west/chest/neck/head/head 1/met1/met3/met2
+        weight: 1
+      - path: hip/west/chest/neck/head/nose
+        weight: 1
+      - path: hip/west/chest/sholder_L
+        weight: 1
+      - path: hip/west/chest/sholder_L/Arm_L
+        weight: 1
+      - path: hip/west/chest/sholder_L/hiji_L
+        weight: 1
+      - path: hip/west/chest/sholder_L/hiji_L/hand_L
+        weight: 1
+      - path: hip/west/chest/sholder_L/hiji_L/hand_L/sheld
+        weight: 1
+      - path: hip/west/chest/sholder_L/hiji_L/polySurface4
+        weight: 1
+      - path: hip/west/chest/sholder_R
+        weight: 1
+      - path: hip/west/chest/sholder_R/Arm_R
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R/hand_R
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R/hand_R/sword
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R/hiji_R 1
+        weight: 1
+      - path: hip/west/chest/sholder_R/hiji_R/polySurface4 1
+        weight: 1
+      - path: LIK
+        weight: 1
+      - path: LIK/ikHandle2
+        weight: 1
+      - path: LIK/ikHandle4
+        weight: 1
+      - path: RIK
+        weight: 1
+      - path: RIK/ikHandle1
+        weight: 1
+      - path: RIK/ikHandle3
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
     isReadable: 1
   meshes:
     lODScreenPercentages: []

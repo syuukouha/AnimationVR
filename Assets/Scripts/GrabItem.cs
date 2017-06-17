@@ -4,16 +4,12 @@ using UnityEngine;
 using VRTK;
 public class GrabItem : VRTK_InteractableObject
 {
-    //private VRTK_ControllerEvents controllerEvents;
-	// Use this for initialization
-	void Start ()
+    public override void Grabbed(GameObject currentGrabbingObject)
     {
-        //controllerEvents = GetComponent<VRTK_ControllerEvents>();
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-
-	}
+        base.Grabbed(currentGrabbingObject);
+        if (gameObject.name == "Sword")
+            GameManager.Instance.IsHaveSword = true;
+        else if (gameObject.name == "Shield")
+            GameManager.Instance.IsHaveShield = true;
+    }
 }

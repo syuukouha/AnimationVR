@@ -135,7 +135,7 @@ ModelImporter:
     4300026: L_arm
     4300028: R_arm
     4300030: koshi_poly
-    7400000: Take 001
+    7400000: Idle
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -147,8 +147,7 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
-    rigImportErrors: "Invalid Avatar Rig Configuration. Missing or invalid transform:\n\tRequired
-      human bone 'RightFoot' not found\n"
+    rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
@@ -162,7 +161,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Take 001
+      name: Idle
       takeName: Take 001
       firstFrame: 1
       lastFrame: 60

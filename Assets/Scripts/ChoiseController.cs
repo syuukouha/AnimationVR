@@ -9,14 +9,30 @@ public class ChoiseController : MonoBehaviour
         if(other.name == "Sword")
         {
             PlayerController.Instance.Attack();
-            DragonController.Instance.Attack(false);
-            DragonController.Instance.Death();
         }
         if (other.name == "Shield")
         {
             PlayerController.Instance.Defence();
         }
-        gameObject.SetActive(false);
-        transform.DOMoveZ(18.0f, 1.0f).SetDelay(3.0f); ;
+        GameManager.Instance.IsChoised = true;
+        transform.position = new Vector3(transform.position.x, transform.position.y, 15f);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            PlayerController.Instance.Attack();
+            GameManager.Instance.IsChoised = true;
+            transform.position = new Vector3(transform.position.x, transform.position.y, 15f);
+
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            PlayerController.Instance.Defence();
+            GameManager.Instance.IsChoised = true;
+            transform.position = new Vector3(transform.position.x, transform.position.y, 15f);
+
+        }
     }
 }

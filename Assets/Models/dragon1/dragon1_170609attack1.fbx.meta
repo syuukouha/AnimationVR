@@ -135,7 +135,7 @@ ModelImporter:
     4300026: L_arm
     4300028: R_arm
     4300030: koshi_poly
-    7400000: Take 001
+    7400000: Attack
     7400002: Take 001 (1)
     9500000: //RootNode
   materials:
@@ -162,9 +162,9 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Take 001
+      name: Attack
       takeName: Take 001
-      firstFrame: 90
+      firstFrame: 1
       lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
@@ -184,7 +184,22 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.5092937
+        functionName: SpawnEffect
+        data: 
+        objectReferenceParameter: {fileID: 1137287337497196, guid: 0af1ec3ac1b829d4a83979a1116477c1,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9739777
+        functionName: DestroyEffect
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
@@ -270,117 +285,7 @@ ModelImporter:
         weight: 1
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
-    - serializedVersion: 16
-      name: Take 001 (1)
-      takeName: Take 001
-      firstFrame: 1
-      lastFrame: 90
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: hip
-        weight: 1
-      - path: hip/koshi
-        weight: 1
-      - path: hip/koshi/chest
-        weight: 1
-      - path: hip/koshi/chest/chest_1
-        weight: 1
-      - path: hip/koshi/chest/Lwing_arm
-        weight: 1
-      - path: hip/koshi/chest/Lwing_arm/L_wingarm_poly
-        weight: 1
-      - path: hip/koshi/chest/Lwing_arm/Lwing_wing
-        weight: 1
-      - path: hip/koshi/chest/Lwing_arm/Lwing_wing/joint3
-        weight: 1
-      - path: hip/koshi/chest/Lwing_arm/Lwing_wing/L_wing_poly
-        weight: 1
-      - path: hip/koshi/chest/neck1
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck3
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck3/neck4
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck3/neck4/head
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck3/neck4/head/jaw
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck3/neck4/head/jaw/chin
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck3/neck4/head/jaw/chin/chin2
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck3/neck4/head/jaw/chin/chin_poly
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck3/neck4/head/jaw/head_poly
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck3/neck4/head/jaw/nose
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck3/neck4/head/jaw/R_horn
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck3/neck4/neck_poly1
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck3/neck_poly2
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck_poly3
-        weight: 1
-      - path: hip/koshi/chest/neck1/neck2/neck_poly4
-        weight: 1
-      - path: hip/koshi/chest/R_wing
-        weight: 1
-      - path: hip/koshi/chest/R_wing/joint19
-        weight: 1
-      - path: hip/koshi/chest/R_wing/R_wing 1
-        weight: 1
-      - path: hip/koshi/koshi_poly
-        weight: 1
-      - path: hip/koshi/L_sholder
-        weight: 1
-      - path: hip/koshi/L_sholder/L_arm
-        weight: 1
-      - path: hip/koshi/L_sholder/L_hiji
-        weight: 1
-      - path: hip/koshi/L_sholder/L_hiji/L_arm2
-        weight: 1
-      - path: hip/koshi/L_sholder/L_hiji/L_hand
-        weight: 1
-      - path: hip/koshi/L_sholder/L_hiji/L_hand/L_hand 1
-        weight: 1
-      - path: hip/koshi/L_sholder/L_hiji/L_hand/L_tumasaki
-        weight: 1
-      - path: hip/koshi/R_sholder
-        weight: 1
-      - path: hip/koshi/R_sholder/R_arm
-        weight: 1
-      - path: hip/koshi/R_sholder/R_hiji
-        weight: 1
-      - path: ikHandle1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
