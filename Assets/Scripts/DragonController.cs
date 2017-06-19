@@ -31,6 +31,10 @@ public class DragonController : Singleton<DragonController> {
     {
         dragonAnimator.SetTrigger("Attack");
     }
+    public void Roar()
+    {
+        dragonAnimator.SetTrigger("Roar");
+    }
     public void Death()
     {
         StartCoroutine(DragonDeath());
@@ -56,6 +60,7 @@ public class DragonController : Singleton<DragonController> {
                 }
                 else
                 {
+                    Roar();
                     thinkTimer = 4f;
                 }
             }

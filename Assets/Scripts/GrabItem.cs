@@ -11,5 +11,6 @@ public class GrabItem : VRTK_InteractableObject
             GameManager.Instance.IsHaveSword = true;
         else if (gameObject.name == "Shield")
             GameManager.Instance.IsHaveShield = true;
+        Destroy(currentGrabbingObject.transform.parent.Find("hand").gameObject, 0.5f);
     }
 }
