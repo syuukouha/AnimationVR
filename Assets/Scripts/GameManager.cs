@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 public class GameManager : Singleton<GameManager> {
     private bool isHaveSword;
     private bool isHaveShield;
 
-    private bool playerStart;
-    private bool dragonStart;
+    private bool playerDebut;
+    private bool dragonDebut;
 
     [SerializeField]
     private GameObject weaponPlatform;
-    [SerializeField]
-    private GameObject choise;
     public bool IsHaveSword
     {
         get
@@ -39,42 +38,46 @@ public class GameManager : Singleton<GameManager> {
         }
     }
 
-    public bool DragonStart
+    public bool DragonDebut
     {
         get
         {
-            return dragonStart;
+            return dragonDebut;
         }
 
         set
         {
-            dragonStart = value;
+            dragonDebut = value;
         }
     }
 
-    public bool PlayerStart
+    public bool PlayerDebut
     {
         get
         {
-            return playerStart;
+            return playerDebut;
         }
 
         set
         {
-            playerStart = value;
+            playerDebut = value;
         }
     }
 
     public bool IsChoised;
-    
+    public int DragonHP;
+    public int PlayerHP;
+
     // Use this for initialization
     void Start ()
     {
         isHaveShield = false;
         isHaveSword = false;
-        playerStart = false;
-        dragonStart = false;
+        playerDebut = false;
+        dragonDebut = false;
         IsChoised = false;
+        DragonHP = 5;
+        PlayerHP = 3;
     }
 
     // Update is called once per frame
@@ -84,19 +87,32 @@ public class GameManager : Singleton<GameManager> {
             isHaveShield = false;
             isHaveSword = false;
             weaponPlatform.SetActive(false);
-            PlayerStart = true;
+            PlayerDebut = true;
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SceneManager.LoadScene(0);
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
             isHaveShield = true;
             isHaveSword = true;
         }
+        if (DragonHP <= 0)
+        {
+            DragonController.Instance.Death();
+        }
+        if (PlayerHP <= 0)
+        {
+            PlayerController.Instance.Death();
+        }
+
     }
 
     public void Choise()
     {
         IsChoised = false;
-        choise.transform.DOMoveZ(0.7f, 1f);
+        ChoiseController.Instance.ShowChoise();
     }
 }
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.SceneManagement;
 public class PlayerController : Singleton<PlayerController>
 {
     private Animator playerAnimator;
@@ -34,22 +33,27 @@ public class PlayerController : Singleton<PlayerController>
         isDefence = false;
         playerAnimator.SetBool("DefenceEnd", value);
     }
+    public void Death()
+    {
+        rigid.isKinematic = false;
+        rigid.useGravity = true;
+    }
     private void Update()
     {
-        if (GameManager.Instance.PlayerStart)
+        if (GameManager.Instance.PlayerDebut)
         {
             rigid.useGravity = true;
-            GameManager.Instance.PlayerStart = false;
+            GameManager.Instance.PlayerDebut = false;
         }
     }
 
-    void PlayerStart()
+    void PlayerDebut()
     {
         rigid.useGravity = false;
-        GetComponent<CapsuleCollider>().isTrigger = true;
+        rigid.isKinematic = true;
         Walk(true);
-        transform.DOMove(new Vector3(-3f, 0f, transform.position.z), 3f).OnComplete(()=> {
-            GameManager.Instance.DragonStart = true;
+        transform.DOMove(new Vector3(-2f, 0.8f, transform.position.z), 3f).OnComplete(()=> {
+            GameManager.Instance.DragonDebut = true;
             Walk(false);
         });
     }
@@ -57,12 +61,19 @@ public class PlayerController : Singleton<PlayerController>
     {
         if(collision.gameObject.name == "Platform")
         {
-            PlayerStart();
+            PlayerDebut();
+            Debug.Log("PlayerDebut");
         }
 
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (other.name == "Platform")
+        {
+            PlayerDebut();
+            Destroy(other.gameObject);
+            Debug.Log("PlayerDebut");
+        }
         if (other.tag == "DragonAttack")
         {
             if (isDefence)
@@ -73,6 +84,7 @@ public class PlayerController : Singleton<PlayerController>
             else
             {
                 Debug.Log("Damage");
+                GameManager.Instance.PlayerHP--;
             }
         }
     }
@@ -84,5 +96,10 @@ public class PlayerController : Singleton<PlayerController>
             GameManager.Instance.Choise();
             Debug.Log("Choise");
         }
+    }
+    public void AttackEffect(GameObject effect)
+    {
+        GameObject go = Instantiate(effect);
+        Destroy(go, 2f);
     }
 }

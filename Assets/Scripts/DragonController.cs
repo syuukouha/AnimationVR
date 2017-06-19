@@ -7,7 +7,7 @@ public class DragonController : Singleton<DragonController> {
 
     private Animator dragonAnimator;
     private Rigidbody rigid;
-    private bool dragonStartComplete;
+    private bool dragonDebutComplete;
     private int index;
     private float thinkTimer;
     public Transform AttackSpawnPos;
@@ -17,16 +17,16 @@ public class DragonController : Singleton<DragonController> {
     {
         dragonAnimator = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
-        dragonStartComplete = false;
+        dragonDebutComplete = false;
         thinkTimer = 4f;
     }
 
-    private IEnumerator DragonDeath()
-    {
-        yield return new WaitForSeconds(7.0f);
-        rigid.isKinematic = false;
-        rigid.useGravity = true;
-    }
+    //private IEnumerator DragonDeath()
+    //{
+    //    yield return new WaitForSeconds(7.0f);
+    //    rigid.isKinematic = false;
+    //    rigid.useGravity = true;
+    //}
     public void Attack()
     {
         dragonAnimator.SetTrigger("Attack");
@@ -37,16 +37,19 @@ public class DragonController : Singleton<DragonController> {
     }
     public void Death()
     {
-        StartCoroutine(DragonDeath());
+        //StartCoroutine(DragonDeath());
+        rigid.isKinematic = false;
+        rigid.useGravity = true;
     }
 
     private void Update()
     {
-        if (GameManager.Instance.DragonStart)
+        if (GameManager.Instance.DragonDebut)
         {
-            DragonStart();
+            DragonDebut();
+            GameManager.Instance.DragonDebut = false;
         }
-        if (dragonStartComplete)
+        if (dragonDebutComplete)
         {
 
             thinkTimer -= Time.deltaTime;
@@ -66,13 +69,11 @@ public class DragonController : Singleton<DragonController> {
             }
         }
     }
-    void DragonStart()
+    void DragonDebut()
     {
-        transform.DOMoveY(-5f, 5f).OnComplete(() => {
-            GameManager.Instance.DragonStart = false;
-            dragonStartComplete = true;
+        transform.DOMoveY(-3.5f, 5f).OnComplete(() => {
+            dragonDebutComplete = true;
             GameManager.Instance.Choise();
-
         });
     }
     public void SpawnEffect(GameObject effect)
