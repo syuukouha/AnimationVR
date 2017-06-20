@@ -104,7 +104,6 @@ public class GameManager : Singleton<GameManager> {
         if (DragonHP <= 0)
         {
             DragonHP = 7;
-            DragonController.Death();
             StartCoroutine(Victory());
         }
         if (PlayerHP <= 0)
@@ -132,8 +131,10 @@ public class GameManager : Singleton<GameManager> {
         dragonController = dragon.GetComponent<DragonController>();
     }
 
-    IEnumerator Victory()
+    public IEnumerator Victory()
     {
+        yield return new WaitForSeconds(4f);
+        dragonController.Death();
         yield return new WaitForSeconds(3f);
         SoundManager.Instance.PlaySE(ResourcesManager.Instance.GetAsset("Sounds/Victory") as AudioClip);
         StartCoroutine(ReStart());
