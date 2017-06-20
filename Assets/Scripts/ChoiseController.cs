@@ -7,7 +7,7 @@ public class ChoiseController : Singleton<ChoiseController>
     private Tweener tweener;
     private void Start()
     {
-        tweener = transform.DORotate(new Vector3(0f, 180f, 0f), 0.3f);
+        tweener = transform.DORotate(new Vector3(0f, 180f, 0f), 1f);
         tweener.Pause();
         tweener.SetAutoKill(false);
     }
@@ -15,15 +15,17 @@ public class ChoiseController : Singleton<ChoiseController>
     {
         if(other.name == "Sword")
         {
-            PlayerController.Instance.Attack();
+            GameManager.Instance.PlayerController.Attack();
             GameManager.Instance.DragonHP--;
+            other.GetComponent<GrabItem>().swordControllerActions.TriggerHapticPulse(5000f, 0.1f, 0.005f);
+
         }
         if (other.name == "Shield")
         {
-            PlayerController.Instance.Defence();
+            GameManager.Instance.PlayerController.Defence();
+            other.GetComponent<GrabItem>().shieldControllerActions.TriggerHapticPulse(5000f, 0.5f, 0.005f);
         }
         GameManager.Instance.IsChoised = true;
-        //transform.position = new Vector3(transform.position.x, transform.position.y, 15f);
         HideChoise();
 
     }
@@ -32,7 +34,8 @@ public class ChoiseController : Singleton<ChoiseController>
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            PlayerController.Instance.Attack();
+            GameManager.Instance.PlayerController.Attack();
+
             GameManager.Instance.IsChoised = true;
             //transform.position = new Vector3(transform.position.x, transform.position.y, 15f);
             HideChoise();
@@ -40,7 +43,7 @@ public class ChoiseController : Singleton<ChoiseController>
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            PlayerController.Instance.Defence();
+            GameManager.Instance.PlayerController.Defence();
             GameManager.Instance.IsChoised = true;
             //transform.position = new Vector3(transform.position.x, transform.position.y, 15f);
             HideChoise();

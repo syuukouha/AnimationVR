@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class DragonController : Singleton<DragonController> {
+public class DragonController : MonoBehaviour {
 
     private Animator dragonAnimator;
     private Rigidbody rigid;
@@ -12,6 +12,7 @@ public class DragonController : Singleton<DragonController> {
     private float thinkTimer;
     public Transform AttackSpawnPos;
     private GameObject AttackEffect;
+    public AudioSource audioSource;
     // Use this for initialization
     void Start ()
     {
@@ -19,14 +20,9 @@ public class DragonController : Singleton<DragonController> {
         rigid = GetComponent<Rigidbody>();
         dragonDebutComplete = false;
         thinkTimer = 4f;
+        DragonDebut();
     }
 
-    //private IEnumerator DragonDeath()
-    //{
-    //    yield return new WaitForSeconds(7.0f);
-    //    rigid.isKinematic = false;
-    //    rigid.useGravity = true;
-    //}
     public void Attack()
     {
         dragonAnimator.SetTrigger("Attack");
@@ -37,18 +33,13 @@ public class DragonController : Singleton<DragonController> {
     }
     public void Death()
     {
-        //StartCoroutine(DragonDeath());
         rigid.isKinematic = false;
         rigid.useGravity = true;
+        Destroy(this.gameObject, 3f);
     }
 
     private void Update()
     {
-        if (GameManager.Instance.DragonDebut)
-        {
-            DragonDebut();
-            GameManager.Instance.DragonDebut = false;
-        }
         if (dragonDebutComplete)
         {
 
@@ -71,6 +62,7 @@ public class DragonController : Singleton<DragonController> {
     }
     void DragonDebut()
     {
+        PlaySound(ResourcesManager.Instance.GetAsset("Sounds/Roar") as AudioClip);
         transform.DOMoveY(-3.5f, 5f).OnComplete(() => {
             dragonDebutComplete = true;
             GameManager.Instance.Choise();
@@ -83,7 +75,11 @@ public class DragonController : Singleton<DragonController> {
     public void DestroyEffect()
     {
         Destroy(AttackEffect);
-        PlayerController.Instance.DefenceEnd(true);
+        GameManager.Instance.PlayerController.DefenceEnd(true);
         Debug.Log("DefenceEnd");
+    }
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 }

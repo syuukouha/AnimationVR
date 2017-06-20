@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-public class PlayerController : Singleton<PlayerController>
+public class PlayerController : MonoBehaviour
 {
     private Animator playerAnimator;
     private Rigidbody rigid;
     private bool isDefence;
+    private AudioSource audioSource;
 
     // Use this for initialization
     void Start()
     {
         playerAnimator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         rigid = GetComponent<Rigidbody>();
+        rigid.useGravity = true;
         isDefence = false;
+        audioSource.PlayOneShot(ResourcesManager.Instance.GetAsset("Sounds/Start") as AudioClip);
     }
     public void Walk(bool value)
     {
@@ -35,16 +39,10 @@ public class PlayerController : Singleton<PlayerController>
     }
     public void Death()
     {
+        audioSource.PlayOneShot(ResourcesManager.Instance.GetAsset("Sounds/PlayerDeath") as AudioClip);
         rigid.isKinematic = false;
         rigid.useGravity = true;
-    }
-    private void Update()
-    {
-        if (GameManager.Instance.PlayerDebut)
-        {
-            rigid.useGravity = true;
-            GameManager.Instance.PlayerDebut = false;
-        }
+        Destroy(this.gameObject, 3f);
     }
 
     void PlayerDebut()
@@ -53,7 +51,7 @@ public class PlayerController : Singleton<PlayerController>
         rigid.isKinematic = true;
         Walk(true);
         transform.DOMove(new Vector3(-2f, 0.8f, transform.position.z), 3f).OnComplete(()=> {
-            GameManager.Instance.DragonDebut = true;
+            GameManager.Instance.SpawnDragon();
             Walk(false);
         });
     }
@@ -80,11 +78,18 @@ public class PlayerController : Singleton<PlayerController>
             {
                 DefenceEnd(false);
                 Debug.Log("Defence");
+                audioSource.PlayOneShot(ResourcesManager.Instance.GetAsset("Sounds/Defence") as AudioClip);
+
             }
             else
             {
                 Debug.Log("Damage");
                 GameManager.Instance.PlayerHP--;
+                if (Random.Range(0, 2) != 0)
+                    audioSource.PlayOneShot(ResourcesManager.Instance.GetAsset("Sounds/PlayerDamage1") as AudioClip);
+                else
+                    audioSource.PlayOneShot(ResourcesManager.Instance.GetAsset("Sounds/PlayerDamage2") as AudioClip);
+
             }
         }
     }
@@ -101,5 +106,9 @@ public class PlayerController : Singleton<PlayerController>
     {
         GameObject go = Instantiate(effect);
         Destroy(go, 2f);
+    }
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 }

@@ -38,36 +38,39 @@ public class GameManager : Singleton<GameManager> {
         }
     }
 
-    public bool DragonDebut
+    public PlayerController PlayerController
     {
         get
         {
-            return dragonDebut;
+            return playerController;
         }
 
         set
         {
-            dragonDebut = value;
+            playerController = value;
         }
     }
 
-    public bool PlayerDebut
+    public DragonController DragonController
     {
         get
         {
-            return playerDebut;
+            return dragonController;
         }
 
         set
         {
-            playerDebut = value;
+            dragonController = value;
         }
     }
 
     public bool IsChoised;
     public int DragonHP;
     public int PlayerHP;
-
+    private PlayerController playerController;
+    private DragonController dragonController;
+    public GameObject PlayerPrefab;
+    public GameObject DragonPrefab;
     // Use this for initialization
     void Start ()
     {
@@ -76,7 +79,7 @@ public class GameManager : Singleton<GameManager> {
         playerDebut = false;
         dragonDebut = false;
         IsChoised = false;
-        DragonHP = 5;
+        DragonHP = 7;
         PlayerHP = 3;
     }
 
@@ -87,7 +90,7 @@ public class GameManager : Singleton<GameManager> {
             isHaveShield = false;
             isHaveSword = false;
             weaponPlatform.SetActive(false);
-            PlayerDebut = true;
+            SpawnPlayer();
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -100,11 +103,15 @@ public class GameManager : Singleton<GameManager> {
         }
         if (DragonHP <= 0)
         {
-            DragonController.Instance.Death();
+            DragonHP = 7;
+            DragonController.Death();
+            StartCoroutine(Victory());
         }
         if (PlayerHP <= 0)
         {
-            PlayerController.Instance.Death();
+            PlayerHP = 3;
+            PlayerController.Death();
+            StartCoroutine(ReStart());
         }
 
     }
@@ -113,6 +120,28 @@ public class GameManager : Singleton<GameManager> {
     {
         IsChoised = false;
         ChoiseController.Instance.ShowChoise();
+    }
+    public void SpawnPlayer()
+    {
+        GameObject player = Instantiate(PlayerPrefab);
+        playerController = player.GetComponent<PlayerController>();
+    }
+    public void SpawnDragon()
+    {
+        GameObject dragon = Instantiate(DragonPrefab);
+        dragonController = dragon.GetComponent<DragonController>();
+    }
+
+    IEnumerator Victory()
+    {
+        yield return new WaitForSeconds(3f);
+        SoundManager.Instance.PlaySE(ResourcesManager.Instance.GetAsset("Sounds/Victory") as AudioClip);
+        StartCoroutine(ReStart());
+    }
+    IEnumerator ReStart()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene(0);
     }
 }
 
