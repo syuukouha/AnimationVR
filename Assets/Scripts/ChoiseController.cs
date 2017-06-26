@@ -7,7 +7,7 @@ public class ChoiseController : Singleton<ChoiseController>
     private Tweener tweener;
     private void Start()
     {
-        tweener = transform.DORotate(new Vector3(0f, 180f, 0f), 1f);
+        tweener = transform.DOScale(Vector3.one, 1f);
         tweener.Pause();
         tweener.SetAutoKill(false);
     }
