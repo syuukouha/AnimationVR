@@ -63,9 +63,9 @@ public class DragonController : MonoBehaviour {
     void DragonDebut()
     {
         PlaySound(ResourcesManager.Instance.GetAsset("Sounds/Roar") as AudioClip);
-        transform.DOMoveY(-3.5f, 5f).OnComplete(() => {
+        transform.DOMoveY(-2f, 5f).OnComplete(() => {
             dragonDebutComplete = true;
-            GameManager.Instance.Choise();
+            //GameManager.Instance.Choise();
         });
     }
     public void SpawnEffect(GameObject effect)

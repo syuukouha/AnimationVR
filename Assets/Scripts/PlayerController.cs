@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
         rigid.useGravity = false;
         rigid.isKinematic = true;
         Walk(true);
-        transform.DOMove(new Vector3(-2f, 0.8f, transform.position.z), 3f).OnComplete(()=> {
+        transform.DOMove(new Vector3(-2f, transform.position.y, transform.position.z), 3f).OnComplete(()=> {
             GameManager.Instance.SpawnDragon();
             Walk(false);
         });

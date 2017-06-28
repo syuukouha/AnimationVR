@@ -27,7 +27,6 @@ public class ChoiseController : Singleton<ChoiseController>
         }
         GameManager.Instance.IsChoised = true;
         HideChoise();
-
     }
 
     private void Update()

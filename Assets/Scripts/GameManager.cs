@@ -89,7 +89,7 @@ public class GameManager : Singleton<GameManager> {
         {
             isHaveShield = false;
             isHaveSword = false;
-            weaponPlatform.SetActive(false);
+            weaponPlatform.transform.DOMoveY(-1f, 1f);
             SpawnPlayer();
         }
         if (Input.GetKeyDown(KeyCode.P))
