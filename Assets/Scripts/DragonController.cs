@@ -65,7 +65,7 @@ public class DragonController : MonoBehaviour {
         PlaySound(ResourcesManager.Instance.GetAsset("Sounds/Roar") as AudioClip);
         transform.DOMoveY(-2f, 5f).OnComplete(() => {
             dragonDebutComplete = true;
-            //GameManager.Instance.Choise();
+            GameManager.Instance.Choise();
         });
     }
     public void SpawnEffect(GameObject effect)
@@ -75,7 +75,7 @@ public class DragonController : MonoBehaviour {
     public void DestroyEffect()
     {
         Destroy(AttackEffect);
-        GameManager.Instance.PlayerController.DefenceEnd(true);
+        //GameManager.Instance.PlayerController.DefenceEnd(true);
         Debug.Log("DefenceEnd");
     }
     public void PlaySound(AudioClip clip)

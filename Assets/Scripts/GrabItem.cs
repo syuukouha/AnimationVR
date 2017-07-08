@@ -4,22 +4,52 @@ using UnityEngine;
 using VRTK;
 public class GrabItem : VRTK_InteractableObject
 {
-    public VRTK_ControllerActions swordControllerActions;
-    public VRTK_ControllerActions shieldControllerActions;
+    private float impactMagnifier = 120f;
+    private float collisionForce = 0f;
+    private float maxCollisionForce = 4000f;
+    private VRTK_ControllerReference controllerReference;
 
-    public override void Grabbed(GameObject currentGrabbingObject)
+    public float CollisionForce()
     {
-        base.Grabbed(currentGrabbingObject);
+        return collisionForce;
+    }
+    public override void Grabbed(VRTK_InteractGrab grabbingObject)
+    {
+        base.Grabbed(grabbingObject);
         if (gameObject.name == "Sword")
         {
             GameManager.Instance.IsHaveSword = true;
-            swordControllerActions = currentGrabbingObject.GetComponent<VRTK_ControllerActions>();
         }
         else if (gameObject.name == "Shield")
         {
             GameManager.Instance.IsHaveShield = true;
-            shieldControllerActions = currentGrabbingObject.GetComponent<VRTK_ControllerActions>();
         }
-        Destroy(currentGrabbingObject.transform.parent.Find("hand").gameObject, 0.5f);
+        controllerReference = VRTK_ControllerReference.GetControllerReference(grabbingObject.controllerEvents.gameObject);
+        Destroy(grabbingObject.transform.parent.Find("hand").gameObject, 0.5f);
+    }
+    public override void Ungrabbed(VRTK_InteractGrab previousGrabbingObject)
+    {
+        base.Ungrabbed(previousGrabbingObject);
+        controllerReference = null;
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        controllerReference = null;
+        interactableRigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (VRTK_ControllerReference.IsValid(controllerReference) && IsGrabbed())
+        {
+            collisionForce = VRTK_DeviceFinder.GetControllerVelocity(controllerReference).magnitude * impactMagnifier;
+            var hapticStrength = collisionForce / maxCollisionForce;
+            VRTK_ControllerHaptics.TriggerHapticPulse(controllerReference, hapticStrength, 0.5f, 0.01f);
+        }
+        else
+        {
+            collisionForce = collision.relativeVelocity.magnitude * impactMagnifier;
+        }
     }
 }

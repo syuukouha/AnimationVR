@@ -13,7 +13,6 @@
         {
             return collisionForce;
         }
-
         public override void Grabbed(VRTK_InteractGrab grabbingObject)
         {
             base.Grabbed(grabbingObject);

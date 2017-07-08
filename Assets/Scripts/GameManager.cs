@@ -7,9 +7,6 @@ public class GameManager : Singleton<GameManager> {
     private bool isHaveSword;
     private bool isHaveShield;
 
-    private bool playerDebut;
-    private bool dragonDebut;
-
     [SerializeField]
     private GameObject weaponPlatform;
     public bool IsHaveSword
@@ -38,18 +35,18 @@ public class GameManager : Singleton<GameManager> {
         }
     }
 
-    public PlayerController PlayerController
-    {
-        get
-        {
-            return playerController;
-        }
+    //public PlayerController PlayerController
+    //{
+    //    get
+    //    {
+    //        return playerController;
+    //    }
 
-        set
-        {
-            playerController = value;
-        }
-    }
+    //    set
+    //    {
+    //        playerController = value;
+    //    }
+    //}
 
     public DragonController DragonController
     {
@@ -67,17 +64,16 @@ public class GameManager : Singleton<GameManager> {
     public bool IsChoised;
     public int DragonHP;
     public int PlayerHP;
-    private PlayerController playerController;
+    //private PlayerController playerController;
     private DragonController dragonController;
-    public GameObject PlayerPrefab;
+    //public GameObject PlayerPrefab;
     public GameObject DragonPrefab;
+    public GameObject ChoisePrefab;
     // Use this for initialization
     void Start ()
     {
         isHaveShield = false;
         isHaveSword = false;
-        playerDebut = false;
-        dragonDebut = false;
         IsChoised = false;
         DragonHP = 7;
         PlayerHP = 3;
@@ -91,6 +87,8 @@ public class GameManager : Singleton<GameManager> {
             isHaveSword = false;
             weaponPlatform.transform.DOMoveY(-1f, 1f);
             SpawnPlayer();
+            Choise();
+            Player.Instance.PlayerDebut();
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -101,29 +99,30 @@ public class GameManager : Singleton<GameManager> {
             isHaveShield = true;
             isHaveSword = true;
         }
-        if (DragonHP <= 0)
-        {
-            DragonHP = 7;
-            StartCoroutine(Victory());
-        }
-        if (PlayerHP <= 0)
-        {
-            PlayerHP = 3;
-            PlayerController.Death();
-            StartCoroutine(ReStart());
-        }
+        //if (DragonHP <= 0)
+        //{
+        //    DragonHP = 7;
+        //    StartCoroutine(Victory());
+        //}
+        //if (PlayerHP <= 0)
+        //{
+        //    PlayerHP = 3;
+        //    //PlayerController.Death();
+        //    StartCoroutine(ReStart());
+        //}
 
     }
 
     public void Choise()
     {
         IsChoised = false;
-        ChoiseController.Instance.ShowChoise();
+        //ChoiseController.Instance.ShowChoise();
+        Instantiate(ChoisePrefab);
     }
     public void SpawnPlayer()
     {
-        GameObject player = Instantiate(PlayerPrefab);
-        playerController = player.GetComponent<PlayerController>();
+        //GameObject player = Instantiate(PlayerPrefab);
+        //playerController = player.GetComponent<PlayerController>();
     }
     public void SpawnDragon()
     {
