@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class Player : Singleton<Player>
+public class Player : MonoBehaviour
 {
-    public GameObject Effect;
     // Use this for initialization
-    void Start () {
-        transform.localScale = Vector3.zero;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    void Start ()
+    {
+        transform.DOScale(Vector3.one * 0.5f, 0.3f);
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
-    public void Attack()
+    public void RotatePanel()
     {
         transform.DORotate(new Vector3(90f, 180f, 0f), 1f);
-        AttackEffect();
+        RotatePanelEffect(ResourcesManager.Instance.GetAsset("Effect/RotatePanelEffect") as GameObject);
         transform.DORotate(new Vector3(90f, 0f, 0f), 1f).SetDelay(3f).OnComplete(()=> {
             if (GameManager.Instance.IsChoised)
             {
@@ -27,16 +27,11 @@ public class Player : Singleton<Player>
             }
         });
     }
-    private void AttackEffect()
+    private void RotatePanelEffect(GameObject effect)
     {
-        GameObject effect = Instantiate(Effect);
-        effect.transform.position = this.transform.position;
-        Destroy(effect, 2f);
+        GameObject go = Instantiate(effect);
+        go.transform.position = this.transform.position;
+        Destroy(go, 2f);
     }
-    public void PlayerDebut()
-    {
-        transform.DOScale(Vector3.one * 0.5f, 0.3f);
-    }
-
 
 }

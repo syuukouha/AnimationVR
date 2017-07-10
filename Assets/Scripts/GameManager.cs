@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using System;
+
 public class GameManager : Singleton<GameManager> {
     private bool isHaveSword;
     private bool isHaveShield;
@@ -35,48 +37,19 @@ public class GameManager : Singleton<GameManager> {
         }
     }
 
-    //public PlayerController PlayerController
-    //{
-    //    get
-    //    {
-    //        return playerController;
-    //    }
-
-    //    set
-    //    {
-    //        playerController = value;
-    //    }
-    //}
-
-    public DragonController DragonController
-    {
-        get
-        {
-            return dragonController;
-        }
-
-        set
-        {
-            dragonController = value;
-        }
-    }
-
     public bool IsChoised;
-    public int DragonHP;
-    public int PlayerHP;
-    //private PlayerController playerController;
-    private DragonController dragonController;
-    //public GameObject PlayerPrefab;
-    public GameObject DragonPrefab;
+
     public GameObject ChoisePrefab;
+    private Player knight;
+    private Player swordsman;
+    private Player wizard;
+
     // Use this for initialization
     void Start ()
     {
         isHaveShield = false;
         isHaveSword = false;
         IsChoised = false;
-        DragonHP = 7;
-        PlayerHP = 3;
     }
 
     // Update is called once per frame
@@ -88,9 +61,9 @@ public class GameManager : Singleton<GameManager> {
             weaponPlatform.transform.DOMoveY(-1f, 1f);
             SpawnPlayer();
             Choise();
-            Player.Instance.PlayerDebut();
         }
-        if (Input.GetKeyDown(KeyCode.P))
+        #region TestCode
+        if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(0);
         }
@@ -99,41 +72,60 @@ public class GameManager : Singleton<GameManager> {
             isHaveShield = true;
             isHaveSword = true;
         }
-        //if (DragonHP <= 0)
-        //{
-        //    DragonHP = 7;
-        //    StartCoroutine(Victory());
-        //}
-        //if (PlayerHP <= 0)
-        //{
-        //    PlayerHP = 3;
-        //    //PlayerController.Death();
-        //    StartCoroutine(ReStart());
-        //}
 
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            if (!IsChoised)
+            {
+                Attack();
+                IsChoised = true;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            if (!IsChoised)
+            {
+                Defence();
+                IsChoised = true;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (!IsChoised)
+            {
+                Magic();
+                IsChoised = true;
+            }
+        }
+        #endregion
     }
 
     public void Choise()
     {
         IsChoised = false;
-        //ChoiseController.Instance.ShowChoise();
         Instantiate(ChoisePrefab);
     }
     public void SpawnPlayer()
     {
-        //GameObject player = Instantiate(PlayerPrefab);
-        //playerController = player.GetComponent<PlayerController>();
+        knight = Instantiate(ResourcesManager.Instance.GetAsset("Character/Knight") as GameObject).GetComponent<Player>();
+        swordsman = Instantiate(ResourcesManager.Instance.GetAsset("Character/Swordsman") as GameObject).GetComponent<Player>();
+        wizard = Instantiate(ResourcesManager.Instance.GetAsset("Character/Wizard") as GameObject).GetComponent<Player>();
     }
-    public void SpawnDragon()
+    public void Attack()
     {
-        GameObject dragon = Instantiate(DragonPrefab);
-        dragonController = dragon.GetComponent<DragonController>();
+        swordsman.RotatePanel();
     }
-
+    public void Defence()
+    {
+        knight.RotatePanel();
+    }
+    public void Magic()
+    {
+        wizard.RotatePanel();
+    }
     public IEnumerator Victory()
     {
         yield return new WaitForSeconds(4f);
-        dragonController.Death();
         yield return new WaitForSeconds(3f);
         SoundManager.Instance.PlaySE(ResourcesManager.Instance.GetAsset("Sounds/Victory") as AudioClip);
         StartCoroutine(ReStart());

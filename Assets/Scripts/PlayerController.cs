@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
         rigid.isKinematic = true;
         Walk(true);
         transform.DOMove(new Vector3(-2f, transform.position.y, transform.position.z), 3f).OnComplete(()=> {
-            GameManager.Instance.SpawnDragon();
+            //GameManager.Instance.SpawnDragon();
             Walk(false);
         });
     }
@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 Debug.Log("Damage");
-                GameManager.Instance.PlayerHP--;
+                //GameManager.Instance.PlayerHP--;
                 if (Random.Range(0, 2) != 0)
                     audioSource.PlayOneShot(ResourcesManager.Instance.GetAsset("Sounds/PlayerDamage1") as AudioClip);
                 else
