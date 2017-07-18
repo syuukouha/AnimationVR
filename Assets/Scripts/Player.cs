@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        transform.DOScale(Vector3.one * 0.5f, 0.3f);
+        transform.DOScale(Vector3.one * 0.6f, 0.3f);
     }
 
     // Update is called once per frame

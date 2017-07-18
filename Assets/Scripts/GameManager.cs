@@ -103,7 +103,7 @@ public class GameManager : Singleton<GameManager> {
     public void Choise()
     {
         IsChoised = false;
-        Instantiate(ChoisePrefab);
+        //Instantiate(ChoisePrefab);
     }
     public void SpawnPlayer()
     {

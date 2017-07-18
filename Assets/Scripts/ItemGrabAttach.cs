@@ -8,6 +8,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
 {
     public Vector3 AttachPosition;
     public Vector3 AttachRotation;
+    public OvrAvatar LocalAvatar;
     protected override void Initialise()
     {
         tracked = false;
@@ -29,6 +30,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
             this.transform.localPosition = AttachPosition;
             this.transform.localRotation = Quaternion.Euler(AttachRotation);
             grabbedObject.transform.parent.Find("Model").gameObject.SetActive(false);
+            LocalAvatar.ShowControllers(false);     
             grabbedObjectScript.isKinematic = true;
             return true;
         }
@@ -42,6 +44,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
     public override void StopGrab(bool applyGrabbingObjectVelocity)
     {
         grabbedObject.transform.parent.Find("Model").gameObject.SetActive(true);
+        LocalAvatar.ShowControllers(true);
         ReleaseObject(applyGrabbingObjectVelocity);
         base.StopGrab(applyGrabbingObjectVelocity);
     }

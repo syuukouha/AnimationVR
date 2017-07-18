@@ -25,7 +25,6 @@ public class GrabItem : VRTK_InteractableObject
             GameManager.Instance.IsHaveShield = true;
         }
         controllerReference = VRTK_ControllerReference.GetControllerReference(grabbingObject.controllerEvents.gameObject);
-        Destroy(grabbingObject.transform.parent.Find("hand").gameObject, 0.5f);
     }
     public override void Ungrabbed(VRTK_InteractGrab previousGrabbingObject)
     {
