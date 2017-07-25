@@ -8,7 +8,7 @@ using System;
 public class GameManager : Singleton<GameManager> {
     private bool isHaveSword;
     private bool isHaveShield;
-
+    public LightController[] Lights;
     [SerializeField]
     private GameObject weaponPlatform;
     public bool IsHaveSword
@@ -59,7 +59,7 @@ public class GameManager : Singleton<GameManager> {
             isHaveShield = false;
             isHaveSword = false;
             weaponPlatform.transform.DOMoveY(-1f, 1f);
-            SpawnPlayer();
+            StartCoroutine(SpawnPlayer());
             Choise();
         }
         #region TestCode
@@ -72,7 +72,10 @@ public class GameManager : Singleton<GameManager> {
             isHaveShield = true;
             isHaveSword = true;
         }
-
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            Lights[0].ChangeLightIntensity(0, 3,0);
+        }
         if (Input.GetKeyDown(KeyCode.A))
         {
             if (!IsChoised)
@@ -105,11 +108,14 @@ public class GameManager : Singleton<GameManager> {
         IsChoised = false;
         //Instantiate(ChoisePrefab);
     }
-    public void SpawnPlayer()
+    private IEnumerator SpawnPlayer()
     {
+        yield return new WaitForSeconds(3f);
         knight = Instantiate(ResourcesManager.Instance.GetAsset("Character/Knight") as GameObject).GetComponent<Player>();
-        swordsman = Instantiate(ResourcesManager.Instance.GetAsset("Character/Swordsman") as GameObject).GetComponent<Player>();
+        yield return new WaitForSeconds(1f);
         wizard = Instantiate(ResourcesManager.Instance.GetAsset("Character/Wizard") as GameObject).GetComponent<Player>();
+        yield return new WaitForSeconds(1f);
+        swordsman = Instantiate(ResourcesManager.Instance.GetAsset("Character/Swordsman") as GameObject).GetComponent<Player>();
     }
     public void Attack()
     {
