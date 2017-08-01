@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 3b7ee2b62258b56468ceadda11ee3665
-timeCreated: 1500984489
+timeCreated: 1501592839
 licenseType: Free
 SubstanceImporter:
   serializedVersion: 5
@@ -253,7 +253,7 @@ SubstanceImporter:
     prototypeName: Floor_Tiles
     shaderName: 
     shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-    shaderKeywords: 
+    shaderKeywords: _EMISSION _METALLICGLOSSMAP _NORMALMAP _PARALLAXMAP
     renderQueue: -1
     lightmapFlags: 5
     inputs:

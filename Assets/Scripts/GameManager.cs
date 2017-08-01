@@ -9,8 +9,6 @@ public class GameManager : Singleton<GameManager> {
     private bool isHaveSword;
     private bool isHaveShield;
     public LightController[] Lights;
-    [SerializeField]
-    private GameObject weaponPlatform;
     public bool IsHaveSword
     {
         get
@@ -58,7 +56,6 @@ public class GameManager : Singleton<GameManager> {
         {
             isHaveShield = false;
             isHaveSword = false;
-            weaponPlatform.transform.DOMoveY(-1f, 1f);
             StartCoroutine(SpawnPlayer());
             Choise();
         }

@@ -21,9 +21,9 @@ public class Player : MonoBehaviour
 	}
     public void RotatePanel()
     {
-        transform.DORotate(new Vector3(90f, 180f, 0f), 1f);
+        transform.DORotate(new Vector3(90f, 360f, 0f), 1f);
         CreateEffect(ResourcesManager.Instance.GetAsset("Effect/RotatePanelEffect") as GameObject);
-        transform.DORotate(new Vector3(90f, 0f, 0f), 1f).SetDelay(3f).OnComplete(()=> {
+        transform.DORotate(new Vector3(90f, 180f, 0f), 1f).SetDelay(3f).OnComplete(()=> {
             if (GameManager.Instance.IsChoised)
             {
                 GameManager.Instance.Choise();
