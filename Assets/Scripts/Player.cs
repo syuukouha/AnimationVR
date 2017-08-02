@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
         transform.DORotate(new Vector3(90f, 180f, 0f), 1f).OnComplete(() => {
             transform.Find("Attack").gameObject.SetActive(true);
         }); ;
-        CreateEffect(ResourcesManager.Instance.GetAsset("Effect/SpawnEffect") as GameObject);
+        //CreateEffect(ResourcesManager.Instance.GetAsset("Effect/SpawnEffect") as GameObject);
 
     }
 
@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     public void RotatePanel()
     {
         transform.DORotate(new Vector3(90f, 360f, 0f), 1f);
-        CreateEffect(ResourcesManager.Instance.GetAsset("Effect/RotatePanelEffect") as GameObject);
+        //CreateEffect(ResourcesManager.Instance.GetAsset("Effect/RotatePanelEffect") as GameObject);
         transform.DORotate(new Vector3(90f, 180f, 0f), 1f).SetDelay(3f).OnComplete(()=> {
             if (GameManager.Instance.IsChoised)
             {

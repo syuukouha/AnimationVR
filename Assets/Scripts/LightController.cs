@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-public class LightController : MonoBehaviour {
-    private Light light;
+public class LightController : MonoBehaviour
+{
     [SerializeField]
     private float endIntensity;
     [SerializeField]
@@ -11,16 +11,18 @@ public class LightController : MonoBehaviour {
     [SerializeField]
     float delay;
     // Use this for initialization
-    void Start () {
-        light = GetComponent<Light>();
+    void Start ()
+    {
         ChangeLightIntensity(endIntensity,duration,delay);
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+
 	}
     public void ChangeLightIntensity(float endIntensity,float duration,float delay)
     {
-        light.DOIntensity(endIntensity, duration).SetDelay(delay);
+        GetComponent<Light>().DOIntensity(endIntensity, duration).SetDelay(delay);
     }
 }
