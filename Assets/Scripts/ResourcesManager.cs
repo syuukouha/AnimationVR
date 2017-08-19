@@ -19,7 +19,10 @@ public class ResourcesManager : Singleton<ResourcesManager>
     /// 等待加载的列表
     /// </summary>
     private Queue<LoadAssets> waitingQueue = new Queue<LoadAssets>();
-
+    public bool IsComplete
+    {
+        get { return loadingList.Count == 0 && waitingQueue.Count == 0; }
+    }
 
     void Update()
     {

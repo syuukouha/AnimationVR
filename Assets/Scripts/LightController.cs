@@ -7,22 +7,22 @@ public class LightController : MonoBehaviour
     [SerializeField]
     private float endIntensity;
     [SerializeField]
-    float duration;
+    private  float duration;
     [SerializeField]
-    float delay;
-    // Use this for initialization
-    void Start ()
-    {
-        ChangeLightIntensity(endIntensity,duration,delay);
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
+    private float delay;
 
-	}
-    public void ChangeLightIntensity(float endIntensity,float duration,float delay)
+    private Light _light;
+    void Start()
     {
-        GetComponent<Light>().DOIntensity(endIntensity, duration).SetDelay(delay);
+        _light = GetComponent<Light>();
     }
+    public void OpenLight()
+    {
+        _light.DOIntensity(endIntensity, duration).SetDelay(delay);
+    }
+    public void CloseLight()
+    {
+        _light.DOIntensity(0f, duration);
+    }
+
 }

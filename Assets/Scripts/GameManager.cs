@@ -5,39 +5,12 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using System;
 
-public class GameManager : Singleton<GameManager> {
-    private bool isHaveSword;
-    private bool isHaveShield;
+public class GameManager : Singleton<GameManager>
+{
     public LightController[] Lights;
-    public bool IsHaveSword
-    {
-        get
-        {
-            return isHaveSword;
-        }
-
-        set
-        {
-            isHaveSword = value;
-        }
-    }
-
-    public bool IsHaveShield
-    {
-        get
-        {
-            return isHaveShield;
-        }
-
-        set
-        {
-            isHaveShield = value;
-        }
-    }
 
     public bool IsChoised;
 
-    public GameObject ChoisePrefab;
     private Player knight;
     private Player swordsman;
     private Player wizard;
@@ -45,20 +18,13 @@ public class GameManager : Singleton<GameManager> {
     // Use this for initialization
     void Start ()
     {
-        isHaveShield = false;
-        isHaveSword = false;
         IsChoised = false;
+        Lights[0].OpenLight();
     }
 
     // Update is called once per frame
-    void Update () {
-		if(isHaveSword && isHaveShield)
-        {
-            isHaveShield = false;
-            isHaveSword = false;
-            StartCoroutine(SpawnPlayer());
-            Choise();
-        }
+    void Update ()
+    {
         #region TestCode
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -66,12 +32,8 @@ public class GameManager : Singleton<GameManager> {
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
-            isHaveShield = true;
-            isHaveSword = true;
-        }
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            Lights[0].ChangeLightIntensity(0, 3,0);
+            StartCoroutine(SpawnPlayer());
+            Choise();
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -103,16 +65,15 @@ public class GameManager : Singleton<GameManager> {
     public void Choise()
     {
         IsChoised = false;
-        //Instantiate(ChoisePrefab);
     }
     private IEnumerator SpawnPlayer()
     {
         yield return new WaitForSeconds(3f);
-        knight = Instantiate(ResourcesManager.Instance.GetAsset("Character/Knight") as GameObject).GetComponent<Player>();
+        knight = Instantiate(ResourcesManager.Instance.GetAsset("Characters/Knight") as GameObject).GetComponent<Player>();
         yield return new WaitForSeconds(1f);
-        wizard = Instantiate(ResourcesManager.Instance.GetAsset("Character/Wizard") as GameObject).GetComponent<Player>();
+        wizard = Instantiate(ResourcesManager.Instance.GetAsset("Characters/Wizard") as GameObject).GetComponent<Player>();
         yield return new WaitForSeconds(1f);
-        swordsman = Instantiate(ResourcesManager.Instance.GetAsset("Character/Swordsman") as GameObject).GetComponent<Player>();
+        swordsman = Instantiate(ResourcesManager.Instance.GetAsset("Characters/Swordsman") as GameObject).GetComponent<Player>();
     }
     public void Attack()
     {

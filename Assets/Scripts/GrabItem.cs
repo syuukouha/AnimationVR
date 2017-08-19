@@ -16,14 +16,6 @@ public class GrabItem : VRTK_InteractableObject
     public override void Grabbed(VRTK_InteractGrab grabbingObject)
     {
         base.Grabbed(grabbingObject);
-        if (gameObject.name == "Sword")
-        {
-            GameManager.Instance.IsHaveSword = true;
-        }
-        else if (gameObject.name == "Shield")
-        {
-            GameManager.Instance.IsHaveShield = true;
-        }
         controllerReference = VRTK_ControllerReference.GetControllerReference(grabbingObject.controllerEvents.gameObject);
     }
     public override void Ungrabbed(VRTK_InteractGrab previousGrabbingObject)
