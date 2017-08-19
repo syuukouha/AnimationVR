@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 3b7ee2b62258b56468ceadda11ee3665
-timeCreated: 1503055685
+timeCreated: 1503132847
 licenseType: Free
 SubstanceImporter:
   serializedVersion: 5
@@ -226,21 +226,21 @@ SubstanceImporter:
       aniso: 1
       wrapMode: 0
     textureAssignments:
-    - shaderProp: _BumpMap
-      material: {instanceID: 0}
-      baseUID: 973816875
     - shaderProp: _MainTex
       material: {instanceID: 0}
       baseUID: 973816873
-    - shaderProp: _ParallaxMap
+    - shaderProp: _BumpMap
       material: {instanceID: 0}
-      baseUID: 1046769374
+      baseUID: 973816875
     - shaderProp: _MetallicGlossMap
       material: {instanceID: 0}
       baseUID: 973816879
     - shaderProp: _OcclusionMap
       material: {instanceID: 0}
       baseUID: 1052931155
+    - shaderProp: _ParallaxMap
+      material: {instanceID: 0}
+      baseUID: 1046769374
     buildTargetSettings:
     - serializedVersion: 2
       buildTarget: 
@@ -255,7 +255,7 @@ SubstanceImporter:
     shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
     shaderKeywords: _EMISSION _METALLICGLOSSMAP _NORMALMAP _PARALLAXMAP
     renderQueue: -1
-    lightmapFlags: 5
+    lightmapFlags: 1
     inputs:
     - name: $outputsize
       value:
@@ -469,21 +469,21 @@ SubstanceImporter:
       aniso: 1
       wrapMode: 0
     textureAssignments:
-    - shaderProp: _BumpMap
-      material: {instanceID: 0}
-      baseUID: 973816875
     - shaderProp: _MainTex
       material: {instanceID: 0}
       baseUID: 973816873
-    - shaderProp: _ParallaxMap
+    - shaderProp: _BumpMap
       material: {instanceID: 0}
-      baseUID: 1046769374
+      baseUID: 973816875
     - shaderProp: _MetallicGlossMap
       material: {instanceID: 0}
       baseUID: 973816879
     - shaderProp: _OcclusionMap
       material: {instanceID: 0}
       baseUID: 1052931155
+    - shaderProp: _ParallaxMap
+      material: {instanceID: 0}
+      baseUID: 1046769374
     buildTargetSettings:
     - serializedVersion: 2
       buildTarget: 
@@ -712,21 +712,21 @@ SubstanceImporter:
       aniso: 1
       wrapMode: 0
     textureAssignments:
-    - shaderProp: _BumpMap
-      material: {instanceID: 0}
-      baseUID: 973816875
     - shaderProp: _MainTex
       material: {instanceID: 0}
       baseUID: 973816873
-    - shaderProp: _ParallaxMap
+    - shaderProp: _BumpMap
       material: {instanceID: 0}
-      baseUID: 1046769374
+      baseUID: 973816875
     - shaderProp: _MetallicGlossMap
       material: {instanceID: 0}
       baseUID: 973816879
     - shaderProp: _OcclusionMap
       material: {instanceID: 0}
       baseUID: 1052931155
+    - shaderProp: _ParallaxMap
+      material: {instanceID: 0}
+      baseUID: 1046769374
     buildTargetSettings:
     - serializedVersion: 2
       buildTarget: 
@@ -955,21 +955,21 @@ SubstanceImporter:
       aniso: 1
       wrapMode: 0
     textureAssignments:
-    - shaderProp: _BumpMap
-      material: {instanceID: 0}
-      baseUID: 973816875
     - shaderProp: _MainTex
       material: {instanceID: 0}
       baseUID: 973816873
-    - shaderProp: _ParallaxMap
+    - shaderProp: _BumpMap
       material: {instanceID: 0}
-      baseUID: 1046769374
+      baseUID: 973816875
     - shaderProp: _MetallicGlossMap
       material: {instanceID: 0}
       baseUID: 973816879
     - shaderProp: _OcclusionMap
       material: {instanceID: 0}
       baseUID: 1052931155
+    - shaderProp: _ParallaxMap
+      material: {instanceID: 0}
+      baseUID: 1046769374
     buildTargetSettings:
     - serializedVersion: 2
       buildTarget: 

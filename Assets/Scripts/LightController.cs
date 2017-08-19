@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-public class LightController : MonoBehaviour
+public class LightController : Singleton<LightController>
 {
     [SerializeField]
     private float endIntensity;

@@ -7,19 +7,16 @@ using System;
 
 public class GameManager : Singleton<GameManager>
 {
-    public LightController[] Lights;
+    public GameObject LeftHand;
+    public GameObject RightHand;
+    public GrabItem[] GrabItems;
 
-    public bool IsChoised;
-
-    private Player knight;
-    private Player swordsman;
-    private Player wizard;
-
+    private List<Player> playerList = new List<Player>();
     // Use this for initialization
     void Start ()
     {
-        IsChoised = false;
-        Lights[0].OpenLight();
+        EnabledGrab(false);
+        StartCoroutine(GameStart());
     }
 
     // Update is called once per frame
@@ -30,62 +27,24 @@ public class GameManager : Singleton<GameManager>
         {
             SceneManager.LoadScene(0);
         }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            StartCoroutine(SpawnPlayer());
-            Choise();
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            if (!IsChoised)
-            {
-                Attack();
-                IsChoised = true;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            if (!IsChoised)
-            {
-                Defence();
-                IsChoised = true;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            if (!IsChoised)
-            {
-                Magic();
-                IsChoised = true;
-            }
-        }
         #endregion
-    }
-
-    public void Choise()
-    {
-        IsChoised = false;
     }
     private IEnumerator SpawnPlayer()
     {
-        yield return new WaitForSeconds(3f);
-        knight = Instantiate(ResourcesManager.Instance.GetAsset("Characters/Knight") as GameObject).GetComponent<Player>();
+        Player player;
+        yield return new WaitForSeconds(4f);
+        player = Instantiate(ResourcesManager.Instance.GetAsset("Characters/Knight") as GameObject).GetComponent<Player>();
+        playerList.Add(player);
         yield return new WaitForSeconds(1f);
-        wizard = Instantiate(ResourcesManager.Instance.GetAsset("Characters/Wizard") as GameObject).GetComponent<Player>();
+        player = Instantiate(ResourcesManager.Instance.GetAsset("Characters/Wizard") as GameObject).GetComponent<Player>(); ;
+        playerList.Add(player);
         yield return new WaitForSeconds(1f);
-        swordsman = Instantiate(ResourcesManager.Instance.GetAsset("Characters/Swordsman") as GameObject).GetComponent<Player>();
-    }
-    public void Attack()
-    {
-        swordsman.RotatePanel();
-    }
-    public void Defence()
-    {
-        knight.RotatePanel();
-    }
-    public void Magic()
-    {
-        wizard.RotatePanel();
+        player = Instantiate(ResourcesManager.Instance.GetAsset("Characters/Sword") as GameObject).GetComponent<Player>(); ;
+        playerList.Add(player);
+
+        yield return new WaitForSeconds(1f);
+        EnabledGrab(true);
+        EnemyManager.Instance.TimerStart = true;
     }
     public IEnumerator Victory()
     {
@@ -94,11 +53,64 @@ public class GameManager : Singleton<GameManager>
         SoundManager.Instance.PlaySE(ResourcesManager.Instance.GetAsset("Sounds/Victory") as AudioClip);
         StartCoroutine(ReStart());
     }
-    IEnumerator ReStart()
+    public IEnumerator ReStart()
     {
         yield return new WaitForSeconds(3f);
         SceneManager.LoadScene(0);
     }
+    public void ShowHand(bool isLeft,bool isShow)
+    {
+        if (isLeft)
+            LeftHand.SetActive(isShow);
+        else
+            RightHand.SetActive(isShow);
+    }
+    public void ReSpawn(int id)
+    {
+        switch (id)
+        {
+            case 0:
+                StartCoroutine( CreateItem(ResourcesManager.Instance.GetAsset("Items/Magic") as GameObject));
+                break;
+            case 1:
+                StartCoroutine(CreateItem(ResourcesManager.Instance.GetAsset("Items/Sword") as GameObject));
+
+                break;
+            case 2:
+                StartCoroutine(CreateItem(ResourcesManager.Instance.GetAsset("Items/Shield") as GameObject));
+                break;
+            default:
+                break;
+        }
+    }
+    IEnumerator CreateItem(GameObject item)
+    {
+        yield return new WaitForSeconds(3f);
+        Instantiate(item);
+    }
+    IEnumerator GameStart()
+    {
+        yield return new WaitForSeconds(3f);
+        LightController.Instance.OpenLight();
+        yield return new WaitForSeconds(1f);
+        EnemyManager.Instance.IsSpawn = true;
+        StartCoroutine(SpawnPlayer());
+    }
+    public void EnabledGrab(bool isEnabled)
+    {
+        for (int i = 0; i < GrabItems.Length; i++)
+        {
+            GrabItems[i].isGrabbable = isEnabled;
+        }
+    }
+    public void PlayerDamage()
+    {
+        foreach (var item in playerList)
+        {
+            item.HP -= 1;
+        }
+    }
+
 }
 
 

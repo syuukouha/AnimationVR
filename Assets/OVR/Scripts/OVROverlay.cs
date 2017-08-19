@@ -378,11 +378,11 @@ public class OVROverlay : MonoBehaviour
 				{
 					bool isSrgb = (etFormat == OVRPlugin.EyeTextureFormat.B8G8R8A8_sRGB || etFormat == OVRPlugin.EyeTextureFormat.R8G8B8A8_sRGB);
 
-					if (currentOverlayShape != OverlayShape.Cubemap && currentOverlayShape != OverlayShape.OffcenterCubemap)
-						et = Texture2D.CreateExternalTexture(size.w, size.h, txFormat, mipLevels > 1, isSrgb, externalTex);
+                    if (currentOverlayShape != OverlayShape.Cubemap && currentOverlayShape != OverlayShape.OffcenterCubemap)
+                        et = Texture2D.CreateExternalTexture(size.w, size.h, txFormat, mipLevels > 1, isSrgb, externalTex);
 #if UNITY_2017_1_OR_NEWER
-					else
-						et = Cubemap.CreateExternalTexture(size.w, size.h, txFormat, mipLevels > 1, isSrgb, externalTex);
+                    else
+                        et = Cubemap.CreateExternalTexture(size.w, txFormat, mipLevels > 1, externalTex);
 #endif
 					
 					externalTextures[eyeId][stage] = et;

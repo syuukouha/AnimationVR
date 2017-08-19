@@ -23,9 +23,9 @@
 
         private float GetCollisionForce(Collision collision)
         {
-            if ((collision.collider.name.Contains("Sword") && collision.collider.GetComponent<GrabItem>().CollisionForce() > breakForce))
+            if ((collision.collider.name.Contains("Sword") && collision.collider.GetComponent<Sword>().CollisionForce() > breakForce))
             {
-                return collision.collider.GetComponent<GrabItem>().CollisionForce() * 1.2f;
+                return collision.collider.GetComponent<Sword>().CollisionForce() * 1.2f;
             }
 
             if (collision.collider.name.Contains("Arrow"))

@@ -21,10 +21,12 @@ public class GameInit : MonoBehaviour,IResourceListener
         ResourcesManager.Instance.Load("Sounds/Defence", typeof(AudioClip), this);
         ResourcesManager.Instance.Load("Sounds/Start", typeof(AudioClip), this);
         ResourcesManager.Instance.Load("Characters/Knight", typeof(GameObject), this);
-        ResourcesManager.Instance.Load("Characters/Swordsman", typeof(GameObject), this);
+        ResourcesManager.Instance.Load("Characters/Sword", typeof(GameObject), this);
         ResourcesManager.Instance.Load("Characters/Wizard", typeof(GameObject), this);
-        ResourcesManager.Instance.Load("Items/BlueSphere", typeof(GameObject), this);
-        ResourcesManager.Instance.Load("Items/RedSphere", typeof(GameObject), this);
-        ResourcesManager.Instance.Load("Items/GoldSphere", typeof(GameObject), this);
+        ResourcesManager.Instance.Load("Items/Magic", typeof(GameObject), this);
+        ResourcesManager.Instance.Load("Items/Shield", typeof(GameObject), this);
+        ResourcesManager.Instance.Load("Items/Sword", typeof(GameObject), this);
+        ResourcesManager.Instance.Load("Effect/Hit", typeof(GameObject), this);
+
     }
 }

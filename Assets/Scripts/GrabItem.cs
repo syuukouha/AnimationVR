@@ -2,13 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 using VRTK;
+using DG.Tweening;
+
+
+public enum ItemType
+{
+    Magic = 0,
+    Sword = 1,
+    Shield = 2,
+}
 public class GrabItem : VRTK_InteractableObject
 {
+    public ItemType itemType;
     private float impactMagnifier = 120f;
     private float collisionForce = 0f;
     private float maxCollisionForce = 4000f;
     private VRTK_ControllerReference controllerReference;
+    private Vector3 dropPosition;
+    private Quaternion dropRotation;
 
+    private void Start()
+    {
+        dropPosition = this.transform.position;
+        dropRotation = this.transform.rotation;
+
+    }
     public float CollisionForce()
     {
         return collisionForce;
@@ -17,13 +35,22 @@ public class GrabItem : VRTK_InteractableObject
     {
         base.Grabbed(grabbingObject);
         controllerReference = VRTK_ControllerReference.GetControllerReference(grabbingObject.controllerEvents.gameObject);
+        if (grabbingObject.name.Contains("Left"))
+            GameManager.Instance.ShowHand(true, false);
+        else
+            GameManager.Instance.ShowHand(false, false);
     }
     public override void Ungrabbed(VRTK_InteractGrab previousGrabbingObject)
     {
         base.Ungrabbed(previousGrabbingObject);
         controllerReference = null;
+        if (previousGrabbingObject.name.Contains("Left"))
+            GameManager.Instance.ShowHand(true, true);
+        else
+            GameManager.Instance.ShowHand(false, true);
+        transform.DOMove(dropPosition, 0.3f);
+        transform.DORotateQuaternion(dropRotation, 0.3f);
     }
-
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -43,4 +70,14 @@ public class GrabItem : VRTK_InteractableObject
             collisionForce = collision.relativeVelocity.magnitude * impactMagnifier;
         }
     }
+    public void Haptic()
+    {
+        VRTK_ControllerHaptics.TriggerHapticPulse(controllerReference, 1.0f, 0.2f, 0.01f);
+    }
+    private void OnDestroy()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.ReSpawn((int)itemType);
+    }
+
 }

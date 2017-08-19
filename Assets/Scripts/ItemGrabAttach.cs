@@ -2,17 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VRTK;
 using VRTK.GrabAttachMechanics;
-
+using DG.Tweening;
 public class ItemGrabAttach : VRTK_BaseGrabAttach
 {
     public Vector3 AttachPosition;
     public Vector3 AttachRotation;
-    public OvrAvatar LocalAvatar;
     public GrabItem grabItem;
-    private bool checkStart = false;
+    public GameObject Effect;
+    public Transform SpawnEffectPos;
+    private bool startGrab = false;
     private List<Vector3> vectorTemp = new List<Vector3>(10);
     private float distance;
+    private bool isShake = false;
     protected override void Initialise()
     {
         tracked = false;
@@ -33,10 +36,8 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
             this.transform.SetParent(grabbingObject.transform.parent);
             this.transform.localPosition = AttachPosition;
             this.transform.localRotation = Quaternion.Euler(AttachRotation);
-            //grabbedObject.transform.parent.Find("Model").gameObject.SetActive(false);
-            LocalAvatar.ShowControllers(false);     
             grabbedObjectScript.isKinematic = true;
-            checkStart = true;
+            startGrab = true;
             return true;
         }
         return false;
@@ -48,8 +49,6 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
     /// <param name="applyGrabbingObjectVelocity">If true will apply the current velocity of the grabbing object to the grabbed object on release.</param>
     public override void StopGrab(bool applyGrabbingObjectVelocity)
     {
-        //grabbedObject.transform.parent.Find("Model").gameObject.SetActive(true);
-        LocalAvatar.ShowControllers(true);
         ReleaseObject(applyGrabbingObjectVelocity);
         base.StopGrab(applyGrabbingObjectVelocity);
     }
@@ -58,9 +57,9 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
     {
         if (!grabItem.IsGrabbed())
             return;
-        if (checkStart)
+        if (startGrab)
         {
-            checkStart = false;
+            startGrab = false;
             vectorTemp.Clear();
             for (int i = 0; i < 10; i++)
             {
@@ -80,10 +79,42 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
         }
         if ((int)(distance *100)> 30)
         {
-            //TODO
-            Debug.LogWarning("futa!");
+            isShake = true;
         }
-        Debug.Log((int)(distance * 100));
+        if (isShake)
+            ShakedController();
+    }
 
+
+    void ShakedController()
+    {
+        Vector3 target = Vector3.zero;
+        isShake = false;
+        GameObject effect = Instantiate(Effect);
+        effect.transform.position = SpawnEffectPos.position;
+        switch (grabItem.itemType)
+        {
+            case ItemType.Magic:
+                target = GameObject.FindGameObjectWithTag("Magic").transform.position;
+                break;
+            case ItemType.Sword:
+                target = GameObject.FindGameObjectWithTag("Sword").transform.position;
+
+                break;
+            case ItemType.Shield:
+                target = GameObject.FindGameObjectWithTag("Knight").transform.position;
+
+                break;
+            default:
+                break;
+        }
+        effect.transform.DOMove(target, 1.0f);
+
+        grabItem.Haptic();
+        if (transform.parent.name.Contains("Left"))
+            GameManager.Instance.ShowHand(true, true);
+        else
+            GameManager.Instance.ShowHand(false, true);
+        Destroy(this.gameObject);
     }
 }
