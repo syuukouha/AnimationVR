@@ -109,6 +109,7 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         if (HP <= 0)
         {
+            HP = 10;
             for (int i = 0; i < enemys.Length; i++)
             {
                 enemys[i].Dead();

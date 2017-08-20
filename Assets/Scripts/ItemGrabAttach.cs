@@ -108,7 +108,8 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
             default:
                 break;
         }
-        effect.transform.DOMove(target, 1.0f);
+        if (target != null)
+            effect.transform.DOMove(target, 1.0f);
 
         grabItem.Haptic();
         if (transform.parent.name.Contains("Left"))

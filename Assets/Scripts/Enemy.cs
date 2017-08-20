@@ -4,10 +4,12 @@ using UnityEngine;
 using DG.Tweening;
 
 public class Enemy : MonoBehaviour {
-
-	// Use this for initialization
-	void Start ()
+    public AudioClip AttackClip;
+    private AudioSource audioSource;
+    // Use this for initialization
+    void Start ()
     {
+        audioSource = GetComponent<AudioSource>();
         transform.DORotate(new Vector3(90f, 180f, 0f), 1f).OnComplete(() =>
         {
             transform.Find("Attack").gameObject.SetActive(true);
@@ -16,6 +18,7 @@ public class Enemy : MonoBehaviour {
 	
     public void Attack()
     {
+        audioSource.PlayOneShot(AttackClip);
         transform.DORotate(new Vector3(90f, 0f, 0f), 1f);
         transform.DORotate(new Vector3(90f, 0, 180f), 1f).SetDelay(3f).OnComplete(()=> {
             GameManager.Instance.PlayerDamage();
@@ -24,9 +27,8 @@ public class Enemy : MonoBehaviour {
     }
     public void Dead()
     {
-        transform.DOScale(0, 0.3f).OnComplete(()=> {
-            Destroy(this.gameObject);
-        });
+        transform.DOMoveY(-5f, 5f);
+        Destroy(this.gameObject, 5f);
     }
 
 

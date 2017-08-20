@@ -7,9 +7,9 @@ using DG.Tweening;
 
 public enum ItemType
 {
-    Magic = 0,
-    Sword = 1,
-    Shield = 2,
+    Magic,
+    Sword,
+    Shield,
 }
 public class GrabItem : VRTK_InteractableObject
 {
@@ -73,11 +73,6 @@ public class GrabItem : VRTK_InteractableObject
     public void Haptic()
     {
         VRTK_ControllerHaptics.TriggerHapticPulse(controllerReference, 1.0f, 0.2f, 0.01f);
-    }
-    private void OnDestroy()
-    {
-        if (GameManager.Instance != null)
-            GameManager.Instance.ReSpawn((int)itemType);
     }
 
 }

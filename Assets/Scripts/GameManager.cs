@@ -70,23 +70,17 @@ public class GameManager : Singleton<GameManager>
         switch (id)
         {
             case 0:
-                StartCoroutine( CreateItem(ResourcesManager.Instance.GetAsset("Items/Magic") as GameObject));
+                Instantiate(ResourcesManager.Instance.GetAsset("Items/Magic") as GameObject);
                 break;
             case 1:
-                StartCoroutine(CreateItem(ResourcesManager.Instance.GetAsset("Items/Sword") as GameObject));
-
+                Instantiate(ResourcesManager.Instance.GetAsset("Items/Sword") as GameObject);
                 break;
             case 2:
-                StartCoroutine(CreateItem(ResourcesManager.Instance.GetAsset("Items/Shield") as GameObject));
+                Instantiate(ResourcesManager.Instance.GetAsset("Items/Shield") as GameObject);
                 break;
             default:
                 break;
         }
-    }
-    IEnumerator CreateItem(GameObject item)
-    {
-        yield return new WaitForSeconds(3f);
-        Instantiate(item);
     }
     IEnumerator GameStart()
     {

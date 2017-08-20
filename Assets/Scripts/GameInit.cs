@@ -13,7 +13,7 @@ public class GameInit : MonoBehaviour,IResourceListener
     }
     private void Awake()
     {
-        ResourcesManager.Instance.Load("Sounds/Roar", typeof(AudioClip), this);
+        ResourcesManager.Instance.Load("Sounds/KinghtAttack", typeof(AudioClip), this);
         ResourcesManager.Instance.Load("Sounds/PlayerDeath", typeof(AudioClip), this);
         ResourcesManager.Instance.Load("Sounds/PlayerDamage1", typeof(AudioClip), this);
         ResourcesManager.Instance.Load("Sounds/PlayerDamage2", typeof(AudioClip), this);
@@ -26,7 +26,7 @@ public class GameInit : MonoBehaviour,IResourceListener
         ResourcesManager.Instance.Load("Items/Magic", typeof(GameObject), this);
         ResourcesManager.Instance.Load("Items/Shield", typeof(GameObject), this);
         ResourcesManager.Instance.Load("Items/Sword", typeof(GameObject), this);
-        ResourcesManager.Instance.Load("Effect/Hit", typeof(GameObject), this);
+        ResourcesManager.Instance.Load("Effects/Hit", typeof(GameObject), this);
 
     }
 }

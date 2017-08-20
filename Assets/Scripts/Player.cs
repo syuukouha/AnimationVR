@@ -5,11 +5,15 @@ using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
+    public int PlayerID;
     public int HP = 5;
-
+    public AudioClip AttackClip;
+    public AudioClip DeathClip;
+    private AudioSource audioSource;
     // Use this for initialization
     void Start ()
     {
+        audioSource = GetComponent<AudioSource>();
         transform.DORotate(new Vector3(90f, 180f, 0f), 1f).OnComplete(() =>
         {
             transform.Find("Attack").gameObject.SetActive(true);
@@ -21,6 +25,7 @@ public class Player : MonoBehaviour
     {
         if (HP <= 0)
         {
+            HP = 0;
             Dead();
         }
     }
@@ -28,8 +33,10 @@ public class Player : MonoBehaviour
     {
         transform.DORotate(new Vector3(90f, 360f, 0f), 1f);
         //CreateEffect(ResourcesManager.Instance.GetAsset("Effect/RotatePanelEffect") as GameObject);
+        audioSource.PlayOneShot(AttackClip);
         transform.DORotate(new Vector3(90f, 180f, 0f), 1f).SetDelay(3f).OnComplete(()=> {
             EnemyManager.Instance.Damage();
+            GameManager.Instance.ReSpawn(PlayerID);
         });
     }
     private void CreateEffect(GameObject effect)
@@ -42,7 +49,7 @@ public class Player : MonoBehaviour
     {
         if(other.tag == "projectile")
         {
-            CreateEffect(ResourcesManager.Instance.GetAsset("Effect/Hit") as GameObject);
+            CreateEffect(ResourcesManager.Instance.GetAsset("Effects/Hit") as GameObject);
             Destroy(other.gameObject);
             RotatePanel();
         }
@@ -50,9 +57,9 @@ public class Player : MonoBehaviour
     private void Dead()
     {
         GameManager.Instance.EnabledGrab(false);
-        transform.DOScale(0, 0.3f).OnComplete(() => {
-            Destroy(this.gameObject);
-        });
+        audioSource.PlayOneShot(DeathClip);
+        transform.DOMoveY(-5f, 5f);
+        Destroy(this.gameObject, 5f);
     }
 
 }
