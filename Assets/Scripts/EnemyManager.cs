@@ -6,7 +6,7 @@ public class EnemyManager : Singleton<EnemyManager>
 {
     public GameObject[] Goblins;
     private Enemy[] enemys;
-    public int HP = 10;
+    public int HP = 5;
 
     private bool timerStart = false;
     private float timer = 0;
@@ -109,7 +109,7 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         if (HP <= 0)
         {
-            HP = 10;
+            HP = 5;
             for (int i = 0; i < enemys.Length; i++)
             {
                 enemys[i].Dead();

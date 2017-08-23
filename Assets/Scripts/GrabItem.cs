@@ -25,7 +25,6 @@ public class GrabItem : VRTK_InteractableObject
     {
         dropPosition = this.transform.position;
         dropRotation = this.transform.rotation;
-
     }
     public float CollisionForce()
     {
@@ -74,5 +73,4 @@ public class GrabItem : VRTK_InteractableObject
     {
         VRTK_ControllerHaptics.TriggerHapticPulse(controllerReference, 1.0f, 0.2f, 0.01f);
     }
-
 }

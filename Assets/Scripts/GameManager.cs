@@ -43,6 +43,9 @@ public class GameManager : Singleton<GameManager>
         playerList.Add(player);
 
         yield return new WaitForSeconds(1f);
+        ReSpawn(0);
+        ReSpawn(1);
+        ReSpawn(2);
         EnabledGrab(true);
         EnemyManager.Instance.TimerStart = true;
     }
@@ -95,6 +98,15 @@ public class GameManager : Singleton<GameManager>
         for (int i = 0; i < GrabItems.Length; i++)
         {
             GrabItems[i].isGrabbable = isEnabled;
+            if(GrabItems[i].isGrabbable)
+            {
+                GrabItems[i].touchHighlightColor = new Color(0, 255, 255,0);
+            }else
+            {
+                GrabItems[i].touchHighlightColor = new Color(0, 0, 0, 0);
+
+            }
+
         }
     }
     public void PlayerDamage()

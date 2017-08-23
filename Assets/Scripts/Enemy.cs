@@ -6,6 +6,7 @@ using DG.Tweening;
 public class Enemy : MonoBehaviour {
     public AudioClip AttackClip;
     private AudioSource audioSource;
+    private bool isDead = false;
     // Use this for initialization
     void Start ()
     {
@@ -18,6 +19,8 @@ public class Enemy : MonoBehaviour {
 	
     public void Attack()
     {
+        if (isDead)
+            return;
         audioSource.PlayOneShot(AttackClip);
         transform.DORotate(new Vector3(90f, 0f, 0f), 1f);
         transform.DORotate(new Vector3(90f, 0, 180f), 1f).SetDelay(3f).OnComplete(()=> {
@@ -27,6 +30,7 @@ public class Enemy : MonoBehaviour {
     }
     public void Dead()
     {
+        isDead = true;
         transform.DOMoveY(-5f, 5f);
         Destroy(this.gameObject, 5f);
     }

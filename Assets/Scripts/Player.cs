@@ -6,7 +6,7 @@ using DG.Tweening;
 public class Player : MonoBehaviour
 {
     public int PlayerID;
-    public int HP = 5;
+    public int HP = 35;
     public AudioClip AttackClip;
     public AudioClip DeathClip;
     private AudioSource audioSource;
@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
             Dead();
         }
     }
-    public void RotatePanel()
+    private void RotatePanel()
     {
         transform.DORotate(new Vector3(90f, 360f, 0f), 1f);
         //CreateEffect(ResourcesManager.Instance.GetAsset("Effect/RotatePanelEffect") as GameObject);
@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
     private void Dead()
     {
         GameManager.Instance.EnabledGrab(false);
-        audioSource.PlayOneShot(DeathClip);
+        //audioSource.PlayOneShot(DeathClip);
         transform.DOMoveY(-5f, 5f);
         Destroy(this.gameObject, 5f);
     }
