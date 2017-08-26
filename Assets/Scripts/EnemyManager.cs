@@ -1,19 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class EnemyManager : Singleton<EnemyManager>
 {
     public GameObject[] Goblins;
+    public GameObject[] Humans;
+    public GameObject[] Wolfs;
+    public GameObject[] Dragon;
+
+    public bool IsPlayerCanAttack;
     private Enemy[] enemys;
-    public int HP = 5;
+    private int HP = 5;
 
     private bool timerStart = false;
     private float timer = 0;
     private float attackTimer = 5.0f;
-    private int index = 0;
+    private int index;
     private int enemyID = 0;
     private bool isSpawn = false;
+    private bool damageShaking = false;
 
     public int EnemyID
     {
@@ -55,8 +61,9 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     // Use this for initialization
-    void Start () {
-		
+    void Start ()
+    {
+        IsPlayerCanAttack = true;	
 	}
 	
 	// Update is called once per frame
@@ -69,6 +76,15 @@ public class EnemyManager : Singleton<EnemyManager>
             {
                 case 0:
                     StartCoroutine(SpawnEnemy(Goblins));
+                    break;
+                case 1:
+                    StartCoroutine(SpawnEnemy(Humans));
+                    break;
+                case 2:
+                    StartCoroutine(SpawnEnemy(Wolfs));
+                    break;
+                case 3:
+                    StartCoroutine(SpawnEnemy(Dragon));
                     break;
                 default:
                     break;
@@ -85,16 +101,10 @@ public class EnemyManager : Singleton<EnemyManager>
 	}
     public void Attack()
     {
-        switch (enemyID)
-        {
-            case 0:
-                enemys[index++].Attack();
-                if (index >= enemys.Length)
-                    index = 0;
-                break;
-            default:
-                break;
-        }
+        enemys[index].Attack();
+        index++;
+        if (index >= enemys.Length)
+            index = 0;
     }
     private IEnumerator SpawnEnemy(GameObject[] go)
     {
@@ -103,23 +113,45 @@ public class EnemyManager : Singleton<EnemyManager>
         {
             yield return new WaitForSeconds(1f);
             enemys[i] = Instantiate(go[i]).GetComponent<Enemy>();
+            if (i == go.Length - 1)
+            {
+                yield return new WaitForSeconds(1f);
+                timerStart = true;
+                IsPlayerCanAttack = true;
+            }
         }
+        index = 0;
     }
     public void Damage()
     {
         if (HP <= 0)
         {
             HP = 5;
+            IsPlayerCanAttack = false;
             for (int i = 0; i < enemys.Length; i++)
             {
                 enemys[i].Dead();
             }
-            StartCoroutine(StageController.Instance.ChangeStage());
+            if (enemyID != 3)
+                StartCoroutine(StageController.Instance.ChangeStage());
             timerStart = false;
+            enemyID += 1;
         }
         else
         {
             HP -= 1;
+            if(!damageShaking)
+            {
+                damageShaking = true;
+                for (int i = 0; i < enemys.Length; i++)
+                {
+                    enemys[i].transform.DOShakePosition(0.5f);
+                    enemys[i].transform.DOShakeRotation(0.5f).OnComplete(()=> {
+                        damageShaking = false;
+                    });
+                }
+            }
+
         }
 
     }

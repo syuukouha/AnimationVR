@@ -55,7 +55,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
 
     private void Update()
     {
-        if (!grabItem.IsGrabbed())
+        if (!grabItem.IsGrabbed() || !EnemyManager.Instance.IsPlayerCanAttack)
             return;
         if (startGrab)
         {
@@ -72,14 +72,43 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
             vectorTemp.Insert(i, vectorTemp[i - 1]);
         }
         vectorTemp.Insert(0, this.transform.position);
-        distance = 0;
-        for (int i = 0; i < 10; i++)
+        switch (grabItem.itemType)
         {
-            distance += Mathf.Abs(Vector3.Distance(vectorTemp[i], vectorTemp[i + 1]));
-        }
-        if ((int)(distance *100)> 25)
-        {
-            isShake = true;
+            case ItemType.Magic:
+                distance = 0;
+                for (int i = 0; i < 10; i++)
+                {
+                    distance += Mathf.Abs(Vector3.Distance(vectorTemp[i], vectorTemp[i + 1]));
+                }
+                if ((int)(distance * 100) > 10)
+                {
+                    isShake = true;
+                }
+                break;
+            case ItemType.Sword:
+                distance = 0;
+                for (int i = 0; i < 10; i++)
+                {
+                    distance += Mathf.Abs(Vector3.Distance(vectorTemp[i], vectorTemp[i + 1]));
+                }
+                if ((int)(distance * 100) > 40)
+                {
+                    isShake = true;
+                }
+                break;
+            case ItemType.Shield:
+                distance = 0;
+                for (int i = 0; i < 10; i++)
+                {
+                    distance += vectorTemp[i].z - vectorTemp[i + 1].z;
+                }
+                if ((int)(distance * 100) > 7)
+                {
+                    isShake = true;
+                }
+                break;
+            default:
+                break;
         }
         if (isShake)
             ShakedController();

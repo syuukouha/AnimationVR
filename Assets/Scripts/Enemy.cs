@@ -11,22 +11,15 @@ public class Enemy : MonoBehaviour {
     void Start ()
     {
         audioSource = GetComponent<AudioSource>();
-        transform.DORotate(new Vector3(90f, 180f, 0f), 1f).OnComplete(() =>
-        {
-            transform.Find("Attack").gameObject.SetActive(true);
-        });
+        transform.DORotate(new Vector3(90f, 180f, 0f), 1f);
 	}
 	
     public void Attack()
     {
         if (isDead)
             return;
-        audioSource.PlayOneShot(AttackClip);
-        transform.DORotate(new Vector3(90f, 0f, 0f), 1f);
-        transform.DORotate(new Vector3(90f, 0, 180f), 1f).SetDelay(3f).OnComplete(()=> {
-            GameManager.Instance.PlayerDamage();
-            EnemyManager.Instance.TimerStart = true;
-        });
+        StartCoroutine(ChangePanel());
+
     }
     public void Dead()
     {
@@ -34,6 +27,15 @@ public class Enemy : MonoBehaviour {
         transform.DOMoveY(-5f, 5f);
         Destroy(this.gameObject, 5f);
     }
-
+    IEnumerator ChangePanel()
+    {
+        GameManager.Instance.PlayerDamage();
+        transform.Find("Attack").gameObject.SetActive(true);
+        transform.Find("Idle").gameObject.SetActive(false);
+        yield return new WaitForSeconds(3.0f);
+        transform.Find("Attack").gameObject.SetActive(false);
+        transform.Find("Idle").gameObject.SetActive(true);
+        EnemyManager.Instance.TimerStart = true;
+    }
 
 }

@@ -10,14 +10,13 @@ public class Player : MonoBehaviour
     public AudioClip AttackClip;
     public AudioClip DeathClip;
     private AudioSource audioSource;
+    private bool isAttacking;
     // Use this for initialization
     void Start ()
     {
         audioSource = GetComponent<AudioSource>();
-        transform.DORotate(new Vector3(90f, 180f, 0f), 1f).OnComplete(() =>
-        {
-            transform.Find("Attack").gameObject.SetActive(true);
-        });
+        transform.DORotate(new Vector3(90f, 180f, 0f), 1f);
+        isAttacking = false;
     }
 
     // Update is called once per frame
@@ -29,15 +28,23 @@ public class Player : MonoBehaviour
             Dead();
         }
     }
-    private void RotatePanel()
+    IEnumerator Attack()
     {
-        transform.DORotate(new Vector3(90f, 360f, 0f), 1f);
-        //CreateEffect(ResourcesManager.Instance.GetAsset("Effect/RotatePanelEffect") as GameObject);
-        audioSource.PlayOneShot(AttackClip);
-        transform.DORotate(new Vector3(90f, 180f, 0f), 1f).SetDelay(3f).OnComplete(()=> {
+        if (!isAttacking)
+        {
+            isAttacking = true;
             EnemyManager.Instance.Damage();
-            GameManager.Instance.ReSpawn(PlayerID);
-        });
+            transform.Find("Attack").gameObject.SetActive(true);
+            transform.Find("Idle").gameObject.SetActive(false);
+
+            audioSource.PlayOneShot(AttackClip);
+            yield return new WaitForSeconds(3.0f);
+            transform.Find("Attack").gameObject.SetActive(false);
+            transform.Find("Idle").gameObject.SetActive(true);  
+            GameManager.Instance.ReSpawnGrabItem(PlayerID);
+            isAttacking = false;
+        }
+
     }
     private void CreateEffect(GameObject effect)
     {
@@ -51,13 +58,12 @@ public class Player : MonoBehaviour
         {
             CreateEffect(ResourcesManager.Instance.GetAsset("Effects/Hit") as GameObject);
             Destroy(other.gameObject);
-            RotatePanel();
+            StartCoroutine(Attack());
         }
     }
     private void Dead()
     {
         GameManager.Instance.EnabledGrab(false);
-        //audioSource.PlayOneShot(DeathClip);
         transform.DOMoveY(-5f, 5f);
         Destroy(this.gameObject, 5f);
     }

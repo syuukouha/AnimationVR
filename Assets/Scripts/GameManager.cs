@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
-using System;
 
 public class GameManager : Singleton<GameManager>
 {
     public GameObject LeftHand;
     public GameObject RightHand;
-    public GrabItem[] GrabItems;
+    private GrabItem[] GrabItems = new GrabItem[3];
 
     private List<Player> playerList = new List<Player>();
     // Use this for initialization
     void Start ()
     {
-        EnabledGrab(false);
         StartCoroutine(GameStart());
     }
 
@@ -43,11 +41,10 @@ public class GameManager : Singleton<GameManager>
         playerList.Add(player);
 
         yield return new WaitForSeconds(1f);
-        ReSpawn(0);
-        ReSpawn(1);
-        ReSpawn(2);
+        ReSpawnGrabItem(0);
+        ReSpawnGrabItem(1);
+        ReSpawnGrabItem(2);
         EnabledGrab(true);
-        EnemyManager.Instance.TimerStart = true;
     }
     public IEnumerator Victory()
     {
@@ -68,18 +65,18 @@ public class GameManager : Singleton<GameManager>
         else
             RightHand.SetActive(isShow);
     }
-    public void ReSpawn(int id)
+    public void ReSpawnGrabItem(int id)
     {
         switch (id)
         {
             case 0:
-                Instantiate(ResourcesManager.Instance.GetAsset("Items/Magic") as GameObject);
+                GrabItems[0] = Instantiate(ResourcesManager.Instance.GetAsset("Items/Magic") as GameObject).GetComponent<GrabItem>();            
                 break;
             case 1:
-                Instantiate(ResourcesManager.Instance.GetAsset("Items/Sword") as GameObject);
+                GrabItems[1] = Instantiate(ResourcesManager.Instance.GetAsset("Items/Sword") as GameObject).GetComponent<GrabItem>();
                 break;
             case 2:
-                Instantiate(ResourcesManager.Instance.GetAsset("Items/Shield") as GameObject);
+                GrabItems[2] = Instantiate(ResourcesManager.Instance.GetAsset("Items/Shield") as GameObject).GetComponent<GrabItem>();
                 break;
             default:
                 break;
@@ -114,6 +111,8 @@ public class GameManager : Singleton<GameManager>
         foreach (var item in playerList)
         {
             item.HP -= 1;
+            item.transform.DOShakePosition(0.5f);
+            item.transform.DOShakeRotation(0.5f);
         }
     }
 
