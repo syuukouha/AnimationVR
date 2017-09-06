@@ -98,11 +98,27 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
                 break;
             case ItemType.Shield:
                 distance = 0;
-                for (int i = 0; i < 10; i++)
+                GameObject go = new GameObject();
+                go.transform.position = vectorTemp[9];
+                go.transform.LookAt(vectorTemp[0]);
+                float angle = Vector3.Angle(grabItem.transform.forward, go.transform.forward);
+                if (angle < 10)
                 {
-                    distance += vectorTemp[i].z - vectorTemp[i + 1].z;
+                    distance = Vector3.Distance(vectorTemp[9], vectorTemp[0]);
+                    Debug.Log((int)(distance * 100));
                 }
-                if ((int)(distance * 100) > 7)
+                //for (int i = 0; i < 10; i++)
+                //{
+                //    distance += vectorTemp[i].z - vectorTemp[i + 1].z;
+                //    //distance += Mathf.Abs(Vector3.Distance(vectorTemp[i], vectorTemp[i + 1]));
+                //}
+                else
+                {
+                    distance -= Vector3.Distance(vectorTemp[1], vectorTemp[0]);
+                    if (distance <= 0)
+                        distance = 0;
+                }
+                if ((int)(distance * 100) > 5 && (int)(distance * 100) < 15)
                 {
                     isShake = true;
                 }
