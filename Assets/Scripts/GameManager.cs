@@ -3,22 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
-
+using VRTK;
 public class GameManager : Singleton<GameManager>
 {
+    public Light PointLight;
+    public Light SpotLight;
     public GameObject LeftHand;
     public GameObject RightHand;
+    public GameObject Title;
+    [SerializeField]
+    private VRTK_ControllerEvents[] controllerEvents;
     private GrabItem[] GrabItems = new GrabItem[3];
 
     private List<Player> playerList = new List<Player>();
+    private bool isGameStart = false;
     // Use this for initialization
     void Start ()
     {
-        StartCoroutine(GameStart());
+        PointLight.DOIntensity(1, 3.0f);
+        SpotLight.DOIntensity(1, 3.0f).SetDelay(3.0f);
+        for (int i = 0; i < controllerEvents.Length; i++)
+        {
+            controllerEvents[i].TriggerPressed += GameManager_TriggerPressed;
+        }
+    }
+
+    private void GameManager_TriggerPressed(object sender, ControllerInteractionEventArgs e)
+    {
+        if (!isGameStart)
+        {
+            GameStart();
+        }
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
         #region TestCode
         if (Input.GetKeyDown(KeyCode.R))
@@ -82,13 +101,14 @@ public class GameManager : Singleton<GameManager>
                 break;
         }
     }
-    IEnumerator GameStart()
+    private void GameStart()
     {
-        yield return new WaitForSeconds(3f);
-        LightController.Instance.OpenLight();
-        yield return new WaitForSeconds(1f);
-        EnemyManager.Instance.IsSpawn = true;
-        StartCoroutine(SpawnPlayer());
+        isGameStart = true;
+        Title.transform.DOMoveY(24.0f, 10.0f).OnComplete(() => {
+            EnemyManager.Instance.IsSpawn = true;
+            StartCoroutine(SpawnPlayer());
+            Title.SetActive(false);
+        });
     }
     public void EnabledGrab(bool isEnabled)
     {
@@ -113,6 +133,14 @@ public class GameManager : Singleton<GameManager>
             item.HP -= 1;
             item.transform.DOShakePosition(0.5f);
             item.transform.DOShakeRotation(0.5f);
+        }
+    }
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        for (int i = 0; i < controllerEvents.Length; i++)
+        {
+            controllerEvents[i].TriggerPressed -= GameManager_TriggerPressed;
         }
     }
 

@@ -14,6 +14,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
     public Transform SpawnEffectPos;
     private bool startGrab = false;
     private List<Vector3> vectorTemp = new List<Vector3>(10);
+    private List<Vector3> directionTemp = new List<Vector3>(10);
     private float distance;
     private bool isShake = false;
     protected override void Initialise()
@@ -61,17 +62,21 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
         {
             startGrab = false;
             vectorTemp.Clear();
+            directionTemp.Clear();
             for (int i = 0; i < 10; i++)
             {
                 vectorTemp.Add(this.transform.position);
+                directionTemp.Add(this.transform.forward);
             }
             return;
         }
         for (int i = 9; i > 0; i--)
         {
             vectorTemp.Insert(i, vectorTemp[i - 1]);
+            directionTemp.Insert(i, directionTemp[i - 1]);
         }
         vectorTemp.Insert(0, this.transform.position);
+        directionTemp.Insert(0, this.transform.forward);
         switch (grabItem.itemType)
         {
             case ItemType.Magic:
@@ -98,29 +103,17 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
                 break;
             case ItemType.Shield:
                 distance = 0;
-                GameObject go = new GameObject();
-                go.transform.position = vectorTemp[9];
-                go.transform.LookAt(vectorTemp[0]);
-                float angle = Vector3.Angle(grabItem.transform.forward, go.transform.forward);
-                if (angle < 10)
+                float angle = Vector3.Angle(this.transform.forward, directionTemp[9]);
+                if (angle < 2)
                 {
-                    distance = Vector3.Distance(vectorTemp[9], vectorTemp[0]);
-                    Debug.Log((int)(distance * 100));
-                }
-                //for (int i = 0; i < 10; i++)
-                //{
-                //    distance += vectorTemp[i].z - vectorTemp[i + 1].z;
-                //    //distance += Mathf.Abs(Vector3.Distance(vectorTemp[i], vectorTemp[i + 1]));
-                //}
-                else
-                {
-                    distance -= Vector3.Distance(vectorTemp[1], vectorTemp[0]);
-                    if (distance <= 0)
-                        distance = 0;
-                }
-                if ((int)(distance * 100) > 5 && (int)(distance * 100) < 15)
-                {
-                    isShake = true;
+                    for (int i = 0; i < 10; i++)
+                    {
+                        distance += Mathf.Abs(Vector3.Distance(vectorTemp[i], vectorTemp[i + 1]));
+                    }
+                    if ((int)(distance * 100) > 5)
+                    {
+                        isShake = true;
+                    }
                 }
                 break;
             default:
