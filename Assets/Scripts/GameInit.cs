@@ -27,6 +27,7 @@ public class GameInit : MonoBehaviour,IResourceListener
         ResourcesManager.Instance.Load("Items/Shield", typeof(GameObject), this);
         ResourcesManager.Instance.Load("Items/Sword", typeof(GameObject), this);
         ResourcesManager.Instance.Load("Effects/Hit", typeof(GameObject), this);
+        ResourcesManager.Instance.Load("Effects/BigExplosionEffect", typeof(GameObject), this);
 
     }
 }
