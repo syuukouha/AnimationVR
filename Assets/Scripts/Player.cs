@@ -50,13 +50,31 @@ public class Player : MonoBehaviour
     {
         GameObject go = Instantiate(effect);
         go.transform.position = this.transform.position;
-        Destroy(go, 2f);
+        Destroy(go, 3f);
     }
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "projectile")
         {
-            CreateEffect(ResourcesManager.Instance.GetAsset("Effects/Hit") as GameObject);
+            switch (PlayerID)
+            {
+                case 0:
+                    CreateEffect(ResourcesManager.Instance.GetAsset("Effects/HitWizard") as GameObject);
+                    GameObject go1 = Instantiate(ResourcesManager.Instance.GetAsset("Effects/AttackWizard") as GameObject);
+                    GameObject go2 = Instantiate(ResourcesManager.Instance.GetAsset("Effects/MagicRing") as GameObject);
+                    Destroy(go1,3.0f);
+                    Destroy(go2, 3.0f);
+                    break;
+                case 1:
+                    CreateEffect(ResourcesManager.Instance.GetAsset("Effects/HitSword") as GameObject);
+                    CreateEffect(ResourcesManager.Instance.GetAsset("Effects/AttackSword") as GameObject);
+                    break;
+                case 2:
+                    CreateEffect(ResourcesManager.Instance.GetAsset("Effects/DefenceKnight") as GameObject);
+                    break;
+                default:
+                    break;
+            }
             Destroy(other.gameObject);
             StartCoroutine(Attack());
         }
@@ -64,7 +82,8 @@ public class Player : MonoBehaviour
     private void Dead()
     {
         GameManager.Instance.EnabledGrab(false);
-        transform.DOMoveY(-5f, 5f);
+        GetComponent<Rigidbody>().isKinematic = false;
+        transform.Find("DeathCollider").gameObject.SetActive(true);
         Destroy(this.gameObject, 5f);
     }
 

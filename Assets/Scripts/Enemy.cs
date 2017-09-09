@@ -24,7 +24,8 @@ public class Enemy : MonoBehaviour {
     public void Dead()
     {
         isDead = true;
-        transform.DOMoveY(-5f, 5f);
+        GetComponent<Rigidbody>().isKinematic = false;
+        transform.Find("DeathCollider").gameObject.SetActive(true);
         Destroy(this.gameObject, 5f);
     }
     IEnumerator ChangePanel()

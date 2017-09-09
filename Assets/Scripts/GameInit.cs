@@ -26,8 +26,11 @@ public class GameInit : MonoBehaviour,IResourceListener
         ResourcesManager.Instance.Load("Items/Magic", typeof(GameObject), this);
         ResourcesManager.Instance.Load("Items/Shield", typeof(GameObject), this);
         ResourcesManager.Instance.Load("Items/Sword", typeof(GameObject), this);
-        ResourcesManager.Instance.Load("Effects/Hit", typeof(GameObject), this);
-        ResourcesManager.Instance.Load("Effects/BigExplosionEffect", typeof(GameObject), this);
-
+        ResourcesManager.Instance.Load("Effects/HitSword", typeof(GameObject), this);
+        ResourcesManager.Instance.Load("Effects/HitWizard", typeof(GameObject), this);
+        ResourcesManager.Instance.Load("Effects/DefenceKnight", typeof(GameObject), this);
+        ResourcesManager.Instance.Load("Effects/AttackSword", typeof(GameObject), this);
+        ResourcesManager.Instance.Load("Effects/AttackWizard", typeof(GameObject), this);
+        ResourcesManager.Instance.Load("Effects/MagicRing", typeof(GameObject), this);
     }
 }

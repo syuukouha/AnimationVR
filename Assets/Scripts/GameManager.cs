@@ -104,7 +104,7 @@ public class GameManager : Singleton<GameManager>
     private void GameStart()
     {
         isGameStart = true;
-        Title.transform.DOMoveY(25.0f, 10.0f).OnComplete(() => {
+        Title.transform.DOMoveY(24.0f, 10.0f).OnComplete(() => {
             EnemyManager.Instance.IsSpawn = true;
             StartCoroutine(SpawnPlayer());
             Title.SetActive(false);

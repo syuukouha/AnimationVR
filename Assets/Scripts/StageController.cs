@@ -8,7 +8,7 @@ public class StageController : Singleton<StageController>
     public Transform Castle;
     public Transform Mountain;
     public Transform Plain;
-
+    public GameObject BigExplosionEffect;
     public AudioClip[] BGM;
 
     public IEnumerator ChangeStage()
@@ -23,7 +23,7 @@ public class StageController : Singleton<StageController>
             SoundManager.Instance.PlayBGM(BGM[stageIndex]);
             EnemyManager.Instance.IsSpawn = true;
             if (stageIndex == 3)
-                Instantiate(ResourcesManager.Instance.GetAsset("Effects/BigExplosionEffect") as GameObject);
+                BigExplosionEffect.SetActive(true);
         });
     }
 }
