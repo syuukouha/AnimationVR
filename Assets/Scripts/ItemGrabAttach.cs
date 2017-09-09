@@ -56,7 +56,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
 
     private void Update()
     {
-        if (!grabItem.IsGrabbed() || !EnemyManager.Instance.IsPlayerCanAttack)
+        if (!grabItem.IsGrabbed() || !GameManager.Instance.IsPlayerCanAttack)
             return;
         if (startGrab)
         {
@@ -137,11 +137,9 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
                 break;
             case ItemType.Sword:
                 target = GameObject.FindGameObjectWithTag("Sword").transform.position;
-
                 break;
             case ItemType.Shield:
                 target = GameObject.FindGameObjectWithTag("Knight").transform.position;
-
                 break;
             default:
                 break;
@@ -150,10 +148,15 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
             effect.transform.DOMove(target, 1.0f);
 
         grabItem.Haptic();
-        if (transform.parent.name.Contains("Left"))
-            GameManager.Instance.ShowHand(true, true);
+        //if (transform.parent.name.Contains("Left"))
+        //    GameManager.Instance.ShowHand(true, true);
+        //else
+        //    GameManager.Instance.ShowHand(false, true);
+        //Destroy(this.gameObject);
+        if (grabItem.itemType == ItemType.Magic)
+            Destroy(this.gameObject);
         else
-            GameManager.Instance.ShowHand(false, true);
-        Destroy(this.gameObject);
+            grabItem.ChangeMaterial(false);
+
     }
 }

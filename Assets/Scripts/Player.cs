@@ -40,8 +40,9 @@ public class Player : MonoBehaviour
             audioSource.PlayOneShot(AttackClip);
             yield return new WaitForSeconds(3.0f);
             transform.Find("Attack").gameObject.SetActive(false);
-            transform.Find("Idle").gameObject.SetActive(true);  
-            GameManager.Instance.ReSpawnGrabItem(PlayerID);
+            transform.Find("Idle").gameObject.SetActive(true);
+            if (PlayerID != 0)
+                GameManager.Instance.EnabledItem(PlayerID);
             isAttacking = false;
         }
 
@@ -81,7 +82,6 @@ public class Player : MonoBehaviour
     }
     private void Dead()
     {
-        GameManager.Instance.EnabledGrab(false);
         GetComponent<Rigidbody>().isKinematic = false;
         transform.Find("DeathCollider").gameObject.SetActive(true);
         Destroy(this.gameObject, 5f);

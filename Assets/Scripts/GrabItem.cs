@@ -20,11 +20,25 @@ public class GrabItem : VRTK_InteractableObject
     private VRTK_ControllerReference controllerReference;
     private Vector3 dropPosition;
     private Quaternion dropRotation;
-
+    private Material normalMaterial;
     private void Start()
     {
         dropPosition = this.transform.position;
         dropRotation = this.transform.rotation;
+        switch (itemType)
+        {
+            case ItemType.Magic:
+                normalMaterial = GetComponentInChildren<SkinnedMeshRenderer>().material;
+                break;
+            case ItemType.Sword:
+                normalMaterial = GetComponentInChildren<MeshRenderer>().material;
+                break;
+            case ItemType.Shield:
+                normalMaterial = GetComponent<MeshRenderer>().material;
+                break;
+            default:
+                break;
+        }
     }
     public float CollisionForce()
     {
@@ -38,6 +52,7 @@ public class GrabItem : VRTK_InteractableObject
             GameManager.Instance.ShowHand(true, false);
         else
             GameManager.Instance.ShowHand(false, false);
+        transform.Find("Wave_02").gameObject.SetActive(false);
     }
     public override void Ungrabbed(VRTK_InteractGrab previousGrabbingObject)
     {
@@ -72,5 +87,27 @@ public class GrabItem : VRTK_InteractableObject
     public void Haptic()
     {
         VRTK_ControllerHaptics.TriggerHapticPulse(controllerReference, 1.0f, 0.2f, 0.01f);
+    }
+    public void ChangeMaterial(bool isEnable)
+    {
+        switch (itemType)
+        {
+            case ItemType.Magic:
+                break;
+            case ItemType.Sword:
+                if (isEnable)
+                    GetComponentInChildren<MeshRenderer>().material = normalMaterial;
+                else
+                    GetComponentInChildren<MeshRenderer>().material = ResourcesManager.Instance.GetAsset("Materials/SwordFade") as Material;
+                break;
+            case ItemType.Shield:
+                if (isEnable)
+                    GetComponent<MeshRenderer>().material = normalMaterial;
+                else
+                    GetComponent<MeshRenderer>().material = ResourcesManager.Instance.GetAsset("Materials/ShieldFade") as Material;
+                break;
+            default:
+                break;
+        }
     }
 }
