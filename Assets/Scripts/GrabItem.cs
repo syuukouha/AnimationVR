@@ -14,6 +14,7 @@ public enum ItemType
 public class GrabItem : VRTK_InteractableObject
 {
     public ItemType itemType;
+    public Material FadeMaterial;
     private float impactMagnifier = 120f;
     private float collisionForce = 0f;
     private float maxCollisionForce = 4000f;
@@ -21,10 +22,23 @@ public class GrabItem : VRTK_InteractableObject
     private Vector3 dropPosition;
     private Quaternion dropRotation;
     private Material normalMaterial;
+    private bool canUse;
+    public bool Reset;
+
+    public bool CanUse
+    {
+        get
+        {
+            return canUse;
+        }
+    }
+
     private void Start()
     {
         dropPosition = this.transform.position;
         dropRotation = this.transform.rotation;
+        canUse = false;
+        Reset = false;
         switch (itemType)
         {
             case ItemType.Magic:
@@ -47,21 +61,35 @@ public class GrabItem : VRTK_InteractableObject
     public override void Grabbed(VRTK_InteractGrab grabbingObject)
     {
         base.Grabbed(grabbingObject);
+        canUse = true;
         controllerReference = VRTK_ControllerReference.GetControllerReference(grabbingObject.controllerEvents.gameObject);
         if (grabbingObject.name.Contains("Left"))
             GameManager.Instance.ShowHand(true, false);
         else
             GameManager.Instance.ShowHand(false, false);
         transform.Find("Wave_02").gameObject.SetActive(false);
+        switch (itemType)
+        {
+            case ItemType.Magic:
+                break;
+            case ItemType.Sword:
+                GameManager.Instance.IsSwordGrabbed = true;
+                break;
+            case ItemType.Shield:
+                GameManager.Instance.IsShieldGrabbed = true;
+                break;
+            default:
+                break;
+        }
     }
     public override void Ungrabbed(VRTK_InteractGrab previousGrabbingObject)
     {
         base.Ungrabbed(previousGrabbingObject);
         controllerReference = null;
-        if (previousGrabbingObject.name.Contains("Left"))
-            GameManager.Instance.ShowHand(true, true);
-        else
-            GameManager.Instance.ShowHand(false, true);
+        //if (previousGrabbingObject.name.Contains("Left"))
+        //    GameManager.Instance.ShowHand(true, true);
+        //else
+        //    GameManager.Instance.ShowHand(false, true);
         transform.DOMove(dropPosition, 0.3f);
         transform.DORotateQuaternion(dropRotation, 0.3f);
     }
@@ -90,6 +118,7 @@ public class GrabItem : VRTK_InteractableObject
     }
     public void ChangeMaterial(bool isEnable)
     {
+        canUse = isEnable;
         switch (itemType)
         {
             case ItemType.Magic:
@@ -98,13 +127,13 @@ public class GrabItem : VRTK_InteractableObject
                 if (isEnable)
                     GetComponentInChildren<MeshRenderer>().material = normalMaterial;
                 else
-                    GetComponentInChildren<MeshRenderer>().material = ResourcesManager.Instance.GetAsset("Materials/SwordFade") as Material;
+                    GetComponentInChildren<MeshRenderer>().material = FadeMaterial;
                 break;
             case ItemType.Shield:
                 if (isEnable)
                     GetComponent<MeshRenderer>().material = normalMaterial;
                 else
-                    GetComponent<MeshRenderer>().material = ResourcesManager.Instance.GetAsset("Materials/ShieldFade") as Material;
+                    GetComponent<MeshRenderer>().material = FadeMaterial;
                 break;
             default:
                 break;

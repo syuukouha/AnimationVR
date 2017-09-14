@@ -12,25 +12,22 @@ public class GameManager : Singleton<GameManager>
     public GameObject RightHand;
     public GameObject Title;
     [HideInInspector]
-    public bool IsPlayerCanAttack;
-    [HideInInspector]
     public bool IsSwordGrabbed;
     [HideInInspector]
     public bool IsShieldGrabbed;
+    public bool IsDeath;
+
     private GrabItem[] grabItems = new GrabItem[3];
 
     private List<Player> playerList = new List<Player>();
-    private bool isGameStart = false;
+    private bool isGameStart;
     // Use this for initialization
     void Start ()
     {
-        IsPlayerCanAttack = true;
         IsSwordGrabbed = false;
         IsShieldGrabbed = false;
-        SpawnGrabItem(1);
-        SpawnGrabItem(2);
-        PointLight.DOIntensity(1, 3.0f);
-        SpotLight.DOIntensity(1, 3.0f).SetDelay(3.0f);
+        isGameStart = false;
+        IsDeath = true;
     }
 
     // Update is called once per frame
@@ -42,6 +39,17 @@ public class GameManager : Singleton<GameManager>
             SceneManager.LoadScene(0);
         }
         #endregion
+        if (ResourcesManager.Instance.IsComplete)
+        {
+            if (grabItems[1] == null)
+                SpawnGrabItem(1);
+            if (grabItems[2] == null)
+                SpawnGrabItem(2);
+            PointLight.DOIntensity(1, 3.0f);
+            SpotLight.DOIntensity(1, 3.0f).SetDelay(3.0f);
+        }
+        if (IsSwordGrabbed && IsShieldGrabbed)
+            GameStart();
     }
     private IEnumerator SpawnPlayer()
     {
@@ -55,6 +63,7 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(1f);
         player = Instantiate(ResourcesManager.Instance.GetAsset("Characters/Sword") as GameObject).GetComponent<Player>(); ;
         playerList.Add(player);
+        IsDeath = false;
     }
     public IEnumerator Victory()
     {
@@ -106,6 +115,7 @@ public class GameManager : Singleton<GameManager>
     public void EnabledItem(int index)
     {
         grabItems[index].ChangeMaterial(true);
+        grabItems[index].Reset = true;
     }
     public void PlayerDamage()
     {

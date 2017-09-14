@@ -8,6 +8,8 @@ public class EnemyManager : Singleton<EnemyManager>
     public GameObject[] Humans;
     public GameObject[] Wolfs;
     public GameObject[] Dragon;
+    [HideInInspector]
+    public bool IsDeath;
 
     private Enemy[] enemys;
     private int HP = 5;
@@ -62,6 +64,7 @@ public class EnemyManager : Singleton<EnemyManager>
     // Use this for initialization
     void Start ()
     {
+        IsDeath = false;
 	}
 	
 	// Update is called once per frame
@@ -115,7 +118,7 @@ public class EnemyManager : Singleton<EnemyManager>
             {
                 yield return new WaitForSeconds(1f);
                 timerStart = true;
-                GameManager.Instance.IsPlayerCanAttack = true;
+                IsDeath = false;
             }
         }
         index = 0;
@@ -125,7 +128,7 @@ public class EnemyManager : Singleton<EnemyManager>
         if (HP <= 0)
         {
             HP = 5;
-            GameManager.Instance.IsPlayerCanAttack = false;
+            IsDeath = true;
             for (int i = 0; i < enemys.Length; i++)
             {
                 enemys[i].Dead();

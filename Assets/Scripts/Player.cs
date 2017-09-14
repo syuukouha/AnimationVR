@@ -82,6 +82,7 @@ public class Player : MonoBehaviour
     }
     private void Dead()
     {
+        GameManager.Instance.IsDeath = true;
         GetComponent<Rigidbody>().isKinematic = false;
         transform.Find("DeathCollider").gameObject.SetActive(true);
         Destroy(this.gameObject, 5f);

@@ -12,7 +12,6 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
     public GrabItem grabItem;
     public GameObject Effect;
     public Transform SpawnEffectPos;
-    private bool startGrab = false;
     private List<Vector3> vectorTemp = new List<Vector3>(10);
     private List<Vector3> directionTemp = new List<Vector3>(10);
     private float distance;
@@ -38,7 +37,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
             this.transform.localPosition = AttachPosition;
             this.transform.localRotation = Quaternion.Euler(AttachRotation);
             grabbedObjectScript.isKinematic = true;
-            startGrab = true;
+            grabItem.Reset = true;
             return true;
         }
         return false;
@@ -56,11 +55,11 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
 
     private void Update()
     {
-        if (!grabItem.IsGrabbed() || !GameManager.Instance.IsPlayerCanAttack)
+        if (!grabItem.CanUse || GameManager.Instance.IsDeath || EnemyManager.Instance.IsDeath)
             return;
-        if (startGrab)
+        if (grabItem.Reset)
         {
-            startGrab = false;
+            grabItem.Reset = false;
             vectorTemp.Clear();
             directionTemp.Clear();
             for (int i = 0; i < 10; i++)
