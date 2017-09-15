@@ -7,6 +7,21 @@ public class Enemy : MonoBehaviour {
     public AudioClip AttackClip;
     private AudioSource audioSource;
     private bool isDead = false;
+    private bool isAttack = false;
+
+    public bool IsAttack
+    {
+        get
+        {
+            return isAttack;
+        }
+
+        set
+        {
+            isAttack = value;
+        }
+    }
+
     // Use this for initialization
     void Start ()
     {
@@ -30,13 +45,15 @@ public class Enemy : MonoBehaviour {
     }
     IEnumerator ChangePanel()
     {
-        GameManager.Instance.PlayerDamage();
+        isAttack = true;
+        GameManager.Instance.PlayerDamage();    
         transform.Find("Attack").gameObject.SetActive(true);
         transform.Find("Idle").gameObject.SetActive(false);
         yield return new WaitForSeconds(3.0f);
         transform.Find("Attack").gameObject.SetActive(false);
         transform.Find("Idle").gameObject.SetActive(true);
         EnemyManager.Instance.TimerStart = true;
+        isAttack = false;
     }
 
 }

@@ -6,27 +6,30 @@ using DG.Tweening;
 public class Player : MonoBehaviour
 {
     public int PlayerID;
-    public int HP = 35;
     public AudioClip AttackClip;
     public AudioClip DeathClip;
     private AudioSource audioSource;
     private bool isAttacking;
+
+    public bool IsAttacking
+    {
+        get
+        {
+            return isAttacking;
+        }
+
+        set
+        {
+            isAttacking = value;
+        }
+    }
+
     // Use this for initialization
     void Start ()
     {
         audioSource = GetComponent<AudioSource>();
         transform.DORotate(new Vector3(90f, 180f, 0f), 1f);
         isAttacking = false;
-    }
-
-    // Update is called once per frame
-    void Update ()
-    {
-        if (HP <= 0)
-        {
-            HP = 0;
-            Dead();
-        }
     }
     IEnumerator Attack()
     {
@@ -45,7 +48,6 @@ public class Player : MonoBehaviour
                 GameManager.Instance.EnabledItem(PlayerID);
             isAttacking = false;
         }
-
     }
     private void CreateEffect(GameObject effect)
     {
@@ -80,9 +82,8 @@ public class Player : MonoBehaviour
             StartCoroutine(Attack());
         }
     }
-    private void Dead()
+    public void Dead()
     {
-        GameManager.Instance.IsDeath = true;
         GetComponent<Rigidbody>().isKinematic = false;
         transform.Find("DeathCollider").gameObject.SetActive(true);
         Destroy(this.gameObject, 5f);

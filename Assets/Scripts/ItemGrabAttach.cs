@@ -37,7 +37,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
             this.transform.localPosition = AttachPosition;
             this.transform.localRotation = Quaternion.Euler(AttachRotation);
             grabbedObjectScript.isKinematic = true;
-            grabItem.Reset = true;
+            GameManager.Instance.isResetItem = true;
             return true;
         }
         return false;
@@ -55,11 +55,11 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
 
     private void Update()
     {
-        if (!grabItem.CanUse || GameManager.Instance.IsDeath || EnemyManager.Instance.IsDeath)
+        if (!grabItem.IsGrabbed() || GameManager.Instance.IsDeath || EnemyManager.Instance.IsDeath)
             return;
-        if (grabItem.Reset)
+        if (GameManager.Instance.isResetItem)
         {
-            grabItem.Reset = false;
+            GameManager.Instance.isResetItem = false;
             vectorTemp.Clear();
             directionTemp.Clear();
             for (int i = 0; i < 10; i++)
@@ -153,9 +153,13 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
         //    GameManager.Instance.ShowHand(false, true);
         //Destroy(this.gameObject);
         if (grabItem.itemType == ItemType.Magic)
+        {
             Destroy(this.gameObject);
+            GameManager.Instance.ItemRest();
+        }
         else
-            grabItem.ChangeMaterial(false);
-
+        {
+            //grabItem.ChangeMaterial(false);
+        }
     }
 }

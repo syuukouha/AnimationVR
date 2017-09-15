@@ -21,38 +21,21 @@ public class GrabItem : VRTK_InteractableObject
     private VRTK_ControllerReference controllerReference;
     private Vector3 dropPosition;
     private Quaternion dropRotation;
-    private Material normalMaterial;
-    private bool canUse;
-    public bool Reset;
+    //private bool canUse;
+    //public bool Reset;
 
-    public bool CanUse
-    {
-        get
-        {
-            return canUse;
-        }
-    }
+    //public bool CanUse
+    //{
+    //    get
+    //    {
+    //        return canUse;
+    //    }
+    //}
 
     private void Start()
     {
         dropPosition = this.transform.position;
         dropRotation = this.transform.rotation;
-        canUse = false;
-        Reset = false;
-        switch (itemType)
-        {
-            case ItemType.Magic:
-                normalMaterial = GetComponentInChildren<SkinnedMeshRenderer>().material;
-                break;
-            case ItemType.Sword:
-                normalMaterial = GetComponentInChildren<MeshRenderer>().material;
-                break;
-            case ItemType.Shield:
-                normalMaterial = GetComponent<MeshRenderer>().material;
-                break;
-            default:
-                break;
-        }
     }
     public float CollisionForce()
     {
@@ -61,7 +44,7 @@ public class GrabItem : VRTK_InteractableObject
     public override void Grabbed(VRTK_InteractGrab grabbingObject)
     {
         base.Grabbed(grabbingObject);
-        canUse = true;
+        //canUse = true;
         controllerReference = VRTK_ControllerReference.GetControllerReference(grabbingObject.controllerEvents.gameObject);
         if (grabbingObject.name.Contains("Left"))
             GameManager.Instance.ShowHand(true, false);
@@ -116,27 +99,5 @@ public class GrabItem : VRTK_InteractableObject
     {
         VRTK_ControllerHaptics.TriggerHapticPulse(controllerReference, 1.0f, 0.2f, 0.01f);
     }
-    public void ChangeMaterial(bool isEnable)
-    {
-        canUse = isEnable;
-        switch (itemType)
-        {
-            case ItemType.Magic:
-                break;
-            case ItemType.Sword:
-                if (isEnable)
-                    GetComponentInChildren<MeshRenderer>().material = normalMaterial;
-                else
-                    GetComponentInChildren<MeshRenderer>().material = FadeMaterial;
-                break;
-            case ItemType.Shield:
-                if (isEnable)
-                    GetComponent<MeshRenderer>().material = normalMaterial;
-                else
-                    GetComponent<MeshRenderer>().material = FadeMaterial;
-                break;
-            default:
-                break;
-        }
-    }
+
 }

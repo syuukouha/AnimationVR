@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using VRTK;
 public class GameManager : Singleton<GameManager>
 {
+    public int HP = 35;
     public Light PointLight;
     public Light SpotLight;
     public GameObject LeftHand;
@@ -16,6 +17,11 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector]
     public bool IsShieldGrabbed;
     public bool IsDeath;
+    public int MagicPower = 0;
+    public bool isResetItem = false;
+    public Material[] Normals;
+    public Material[] Fades;
+
 
     private GrabItem[] grabItems = new GrabItem[3];
 
@@ -50,6 +56,23 @@ public class GameManager : Singleton<GameManager>
         }
         if (IsSwordGrabbed && IsShieldGrabbed)
             GameStart();
+        if (MagicPower >= 2 && grabItems[0] == null)
+        {
+            SpawnGrabItem(0);
+            Destroy(grabItems[1]);
+            Destroy(grabItems[2]);
+            ShowHand(true, true);
+            ShowHand(false, true);
+        }
+    }
+
+    public void ItemRest()
+    {
+        MagicPower = 0;
+        SpawnGrabItem(1);
+        SpawnGrabItem(2);
+        ShowHand(true, true);
+        ShowHand(false, true);
     }
     private IEnumerator SpawnPlayer()
     {
@@ -114,19 +137,50 @@ public class GameManager : Singleton<GameManager>
     }
     public void EnabledItem(int index)
     {
-        grabItems[index].ChangeMaterial(true);
-        grabItems[index].Reset = true;
+        if (grabItems[index] == null)
+            return;
+        isResetItem = true;
     }
     public void PlayerDamage()
     {
         foreach (var item in playerList)
         {
-            item.HP -= 1;
+            if (item.PlayerID == 2 && item.IsAttacking)
+                return;
+            HP -= 1;
+            if (HP <= 0)
+            {
+                HP = 0;
+                IsDeath = true;
+                item.Dead();
+            }
             item.transform.DOShakePosition(0.5f);
             item.transform.DOShakeRotation(0.5f);
         }
     }
-
+    public void ChangeMaterial(bool isEnable)
+    {
+        //switch (itemType)
+        //{
+        //    case ItemType.Magic:
+        //        break;
+        //    case ItemType.Sword:
+        //        if (isEnable)
+        //            GetComponentInChildren<MeshRenderer>().material = normalMaterial;
+        //        else
+        //            GetComponentInChildren<MeshRenderer>().material = FadeMaterial;
+        //        break;
+        //    case ItemType.Shield:
+        //        if (isEnable)
+        //            GetComponent<MeshRenderer>().material = normalMaterial;
+        //        else
+        //            GetComponent<MeshRenderer>().material = FadeMaterial;
+        //        break;
+        //    default:
+        //        break;
+        //}
+        
+    }
 
 }
 

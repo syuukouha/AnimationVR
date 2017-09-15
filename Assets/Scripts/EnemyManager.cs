@@ -20,7 +20,6 @@ public class EnemyManager : Singleton<EnemyManager>
     private int index;
     private int enemyID = 0;
     private bool isSpawn = false;
-    private bool damageShaking = false;
 
     public int EnemyID
     {
@@ -99,7 +98,22 @@ public class EnemyManager : Singleton<EnemyManager>
             timer = 0;
             Attack();
         }
-	}
+
+        if (HP <= 0)
+        {
+            HP = 5;
+            IsDeath = true;
+            for (int i = 0; i < enemys.Length; i++)
+            {
+                enemys[i].Dead();
+            }
+            if (enemyID != 3)
+                StartCoroutine(StageController.Instance.ChangeStage());
+            timerStart = false;
+            enemyID += 1;
+        }
+
+    }
     public void Attack()
     {
         enemys[index].Attack();
@@ -125,35 +139,14 @@ public class EnemyManager : Singleton<EnemyManager>
     }
     public void Damage()
     {
-        if (HP <= 0)
+        if (enemys[0].IsAttack)
+            return;
+        HP -= 1;
+        GameManager.Instance.MagicPower += 1;
+        for (int i = 0; i < enemys.Length; i++)
         {
-            HP = 5;
-            IsDeath = true;
-            for (int i = 0; i < enemys.Length; i++)
-            {
-                enemys[i].Dead();
-            }
-            if (enemyID != 3)
-                StartCoroutine(StageController.Instance.ChangeStage());
-            timerStart = false;
-            enemyID += 1;
+            enemys[i].transform.DOShakePosition(0.5f);
+            enemys[i].transform.DOShakeRotation(0.5f);
         }
-        else
-        {
-            HP -= 1;
-            if(!damageShaking)
-            {
-                damageShaking = true;
-                for (int i = 0; i < enemys.Length; i++)
-                {
-                    enemys[i].transform.DOShakePosition(0.5f);
-                    enemys[i].transform.DOShakeRotation(0.5f).OnComplete(()=> {
-                        damageShaking = false;
-                    });
-                }
-            }
-
-        }
-
     }
 }
