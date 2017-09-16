@@ -14,12 +14,13 @@ public class EnemyManager : Singleton<EnemyManager>
     private Enemy[] enemys;
     private int HP = 5;
 
-    private bool timerStart = false;
+    private bool timerStart;
     private float timer = 0;
     private float attackTimer = 5.0f;
     private int enemyID = 0;
-    private bool isSpawn = false;
+    private bool isSpawn;
     public int MagicPower;
+    public bool isDamage;
 
     public int EnemyID
     {
@@ -63,7 +64,10 @@ public class EnemyManager : Singleton<EnemyManager>
     // Use this for initialization
     void Start ()
     {
+        isSpawn = false;
         IsDeath = false;
+        isDamage = false;
+        timerStart = false;
 	}
 	
 	// Update is called once per frame
@@ -98,6 +102,8 @@ public class EnemyManager : Singleton<EnemyManager>
             timer = 0;
             if (Random.Range(0, 2) > 0)
             {
+                if (enemys[0] == null)
+                    return;
                 enemys[0].Attack();
                 GameObject effect = Instantiate(ResourcesManager.Instance.GetAsset("Effects/DefenceEnemy") as GameObject);
                 effect.transform.position = enemys[0].transform.position;
@@ -105,6 +111,8 @@ public class EnemyManager : Singleton<EnemyManager>
             }
             else
             {
+                if (enemys[2] == null)
+                    return;
                 enemys[2].Attack();
                 GameObject effect = Instantiate(ResourcesManager.Instance.GetAsset("Effects/AttackEnemy") as GameObject);
                 effect.transform.position = enemys[0].transform.position;
@@ -128,6 +136,7 @@ public class EnemyManager : Singleton<EnemyManager>
         }
         if(MagicPower >= 2)
         {
+            MagicPower = 0;
             enemys[1].Attack();
             GameObject effect = Instantiate(ResourcesManager.Instance.GetAsset("Effects/AttackEnemy") as GameObject);
             Destroy(effect, 3f);
@@ -146,6 +155,7 @@ public class EnemyManager : Singleton<EnemyManager>
                 yield return new WaitForSeconds(1f);
                 timerStart = true;
                 IsDeath = false;
+                GameManager.Instance.ClearAllTemp();
             }
         }
         MagicPower = 0;
@@ -153,13 +163,17 @@ public class EnemyManager : Singleton<EnemyManager>
     public void Damage()
     {
         if (enemys[0].IsAttack)
+        {
+            isDamage = false;
             return;
+        }
+        isDamage = true;
         HP -= 1;
-        GameManager.Instance.MagicPower += 1;
         for (int i = 0; i < enemys.Length; i++)
         {
             enemys[i].transform.DOShakePosition(0.5f);
             enemys[i].transform.DOShakeRotation(0.5f);
         }
+
     }
 }

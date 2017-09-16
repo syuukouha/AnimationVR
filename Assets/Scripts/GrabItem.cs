@@ -43,6 +43,7 @@ public class GrabItem : VRTK_InteractableObject
         switch (itemType)
         {
             case ItemType.Magic:
+                GameManager.Instance.IsCanAttack = true;
                 break;
             case ItemType.Sword:
                 GameManager.Instance.IsSwordGrabbed = true;

@@ -48,12 +48,15 @@ public class Enemy : MonoBehaviour {
     {
         isAttack = true;
         if (EnemyID != 0)
-            GameManager.Instance.PlayerDamage();   
+            GameManager.Instance.PlayerDamage();
+        if (EnemyID == 1 && GameManager.Instance.isDamage)
+            EnemyManager.Instance.MagicPower += 1;
         transform.Find("Attack").gameObject.SetActive(true);
         transform.Find("Idle").gameObject.SetActive(false);
         yield return new WaitForSeconds(3.0f);
         transform.Find("Attack").gameObject.SetActive(false);
         transform.Find("Idle").gameObject.SetActive(true);
+        
         EnemyManager.Instance.TimerStart = true;
         isAttack = false;
     }

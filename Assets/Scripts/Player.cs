@@ -38,6 +38,8 @@ public class Player : MonoBehaviour
             isAttacking = true;
             if (PlayerID != 2)
                 EnemyManager.Instance.Damage();
+            if (PlayerID == 1 && EnemyManager.Instance.isDamage)
+                GameManager.Instance.MagicPower += 1;
             transform.Find("Attack").gameObject.SetActive(true);
             transform.Find("Idle").gameObject.SetActive(false);
             audioSource.PlayOneShot(AttackClip);

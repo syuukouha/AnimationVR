@@ -15,12 +15,13 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
     private List<Vector3> vectorTemp = new List<Vector3>(10);
     private List<Vector3> directionTemp = new List<Vector3>(10);
     private float distance;
-    private bool isShake = false;
+    private bool isShake;
     protected override void Initialise()
     {
         tracked = false;
         climbable = false;
         kinematic = true;
+        isShake = false;
     }
     /// <summary>
     /// The StartGrab method sets up the grab attach mechanic as soon as an object is grabbed. It is also responsible for creating the joint on the grabbed object.
@@ -37,7 +38,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
             this.transform.localPosition = AttachPosition;
             this.transform.localRotation = Quaternion.Euler(AttachRotation);
             grabbedObjectScript.isKinematic = true;
-            GameManager.Instance.isResetItem = true;
+            ClearTemp();
             return true;
         }
         return false;
@@ -55,20 +56,8 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
 
     private void Update()
     {
-        if (!grabItem.IsGrabbed() || GameManager.Instance.IsDeath || EnemyManager.Instance.IsDeath)
+        if (!grabItem.IsGrabbed() || EnemyManager.Instance.IsDeath || GameManager.Instance.IsDeath || !GameManager.Instance.IsCanAttack)
             return;
-        if (GameManager.Instance.isResetItem)
-        {
-            GameManager.Instance.isResetItem = false;
-            vectorTemp.Clear();
-            directionTemp.Clear();
-            for (int i = 0; i < 10; i++)
-            {
-                vectorTemp.Add(this.transform.position);
-                directionTemp.Add(this.transform.forward);
-            }
-            return;
-        }
         for (int i = 9; i > 0; i--)
         {
             vectorTemp.Insert(i, vectorTemp[i - 1]);
@@ -95,7 +84,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
                 {
                     distance += Mathf.Abs(Vector3.Distance(vectorTemp[i], vectorTemp[i + 1]));
                 }
-                if ((int)(distance * 100) > 40)
+                if ((int)(distance * 100) > 50)
                 {
                     isShake = true;
                 }
@@ -103,13 +92,13 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
             case ItemType.Shield:
                 distance = 0;
                 float angle = Vector3.Angle(this.transform.forward, directionTemp[9]);
-                if (angle < 2)
+                if (angle < 10)
                 {
                     for (int i = 0; i < 10; i++)
                     {
                         distance += Mathf.Abs(Vector3.Distance(vectorTemp[i], vectorTemp[i + 1]));
                     }
-                    if ((int)(distance * 100) > 5)
+                    if ((int)(distance * 100) > 10)
                     {
                         isShake = true;
                     }
@@ -120,6 +109,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
         }
         if (isShake)
             ShakedController();
+
     }
 
 
@@ -127,6 +117,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
     {
         Vector3 target = Vector3.zero;
         isShake = false;
+        GameManager.Instance.IsCanAttack = false;
         GameObject effect = Instantiate(Effect);
         effect.transform.position = SpawnEffectPos.position;
         switch (grabItem.itemType)
@@ -162,6 +153,16 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
                 break;
             default:
                 break;
+        }
+    }
+    public void ClearTemp()
+    {
+        vectorTemp.Clear();
+        directionTemp.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            vectorTemp.Add(this.transform.position);
+            directionTemp.Add(this.transform.forward);
         }
     }
 }

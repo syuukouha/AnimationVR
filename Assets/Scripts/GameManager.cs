@@ -17,23 +17,26 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector]
     public bool IsShieldGrabbed;
     public bool IsDeath;
-    public bool isResetItem = false;
     public Material[] Normals;
     public Material[] Fades;
     public int MagicPower = 0;
-
-
-    private GrabItem[] grabItems = new GrabItem[3];
+    public bool IsCanAttack;
+    private ItemGrabAttach[] grabItems = new ItemGrabAttach[3];
 
     private List<Player> playerList = new List<Player>();
     private bool isGameStart;
+    private bool isInit;
+    public bool isDamage;
     // Use this for initialization
     void Start ()
     {
         IsSwordGrabbed = false;
         IsShieldGrabbed = false;
         isGameStart = false;
-        IsDeath = true;
+        IsDeath = false;
+        isInit = true;
+        IsCanAttack = false;
+        isDamage = false;
     }
 
     // Update is called once per frame
@@ -45,12 +48,11 @@ public class GameManager : Singleton<GameManager>
             SceneManager.LoadScene(0);
         }
         #endregion
-        if (ResourcesManager.Instance.IsComplete)
+        if (ResourcesManager.Instance.IsComplete && isInit)
         {
-            if (grabItems[1] == null)
-                SpawnGrabItem(1);
-            if (grabItems[2] == null)
-                SpawnGrabItem(2);
+            isInit = false;
+            SpawnGrabItem(1);
+            SpawnGrabItem(2);
             PointLight.DOIntensity(1, 3.0f);
             SpotLight.DOIntensity(1, 3.0f).SetDelay(3.0f);
         }
@@ -59,11 +61,12 @@ public class GameManager : Singleton<GameManager>
         if (MagicPower >= 2 && grabItems[0] == null)
         {
             SpawnGrabItem(0);
-            Destroy(grabItems[1]);
-            Destroy(grabItems[2]);
+            Destroy(grabItems[1].gameObject);
+            Destroy(grabItems[2].gameObject);
             ShowHand(true, true);
             ShowHand(false, true);
         }
+        Debug.Log(MagicPower);
     }
 
     public void ItemRest()
@@ -73,6 +76,7 @@ public class GameManager : Singleton<GameManager>
         SpawnGrabItem(2);
         ShowHand(true, true);
         ShowHand(false, true);
+        IsCanAttack = true;
     }
     private IEnumerator SpawnPlayer()
     {
@@ -86,7 +90,9 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(1f);
         player = Instantiate(ResourcesManager.Instance.GetAsset("Characters/Sword") as GameObject).GetComponent<Player>(); ;
         playerList.Add(player);
-        IsDeath = false;
+        IsCanAttack = true;
+        EnabledItem(1);
+        EnabledItem(2);
     }
     public IEnumerator Victory()
     {
@@ -111,13 +117,13 @@ public class GameManager : Singleton<GameManager>
         switch (id)
         {
             case 0:
-                grabItems[0] = Instantiate(ResourcesManager.Instance.GetAsset("Items/Magic") as GameObject).GetComponent<GrabItem>();            
+                grabItems[0] = Instantiate(ResourcesManager.Instance.GetAsset("Items/Magic") as GameObject).GetComponent<ItemGrabAttach>();            
                 break;
             case 1:
-                grabItems[1] = Instantiate(ResourcesManager.Instance.GetAsset("Items/Sword") as GameObject).GetComponent<GrabItem>();
+                grabItems[1] = Instantiate(ResourcesManager.Instance.GetAsset("Items/Sword") as GameObject).GetComponent<ItemGrabAttach>();
                 break;
             case 2:
-                grabItems[2] = Instantiate(ResourcesManager.Instance.GetAsset("Items/Shield") as GameObject).GetComponent<GrabItem>();
+                grabItems[2] = Instantiate(ResourcesManager.Instance.GetAsset("Items/Shield") as GameObject).GetComponent<ItemGrabAttach>();
                 break;
             default:
                 break;
@@ -139,14 +145,18 @@ public class GameManager : Singleton<GameManager>
         if (grabItems[index] == null)
             return;
         ChangeMaterial(true, index);
-        isResetItem = true;
+        grabItems[index].ClearTemp();
     }
     public void PlayerDamage()
     {
         foreach (var item in playerList)
         {
             if (item.PlayerID == 2 && item.IsAttacking)
+            {
+                isDamage = false;
                 return;
+            }
+            isDamage = true;
             HP -= 1;
             if (HP <= 0)
             {
@@ -164,18 +174,36 @@ public class GameManager : Singleton<GameManager>
         {
             case 1:
                 if (isEnable)
+                {
+                    IsCanAttack = true;
                     grabItems[index].GetComponentInChildren<MeshRenderer>().material = Normals[0];
+                }
                 else
+                {
                     grabItems[index].GetComponentInChildren<MeshRenderer>().material = Fades[0];
+                }
                 break;
             case 2:
                 if (isEnable)
+                {
+                    IsCanAttack = true;
                     grabItems[index].GetComponent<MeshRenderer>().material = Normals[1];
+                }
                 else
+                {
                     grabItems[index].GetComponent<MeshRenderer>().material = Fades[1];
+                }
                 break;
             default:
                 break;
+        }
+    }
+    public void ClearAllTemp()
+    {
+        foreach (var item in grabItems)
+        {
+            if (item != null)
+                item.ClearTemp();
         }
     }
 
