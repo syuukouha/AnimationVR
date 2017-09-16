@@ -147,19 +147,21 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
             effect.transform.DOMove(target, 1.0f);
 
         grabItem.Haptic();
-        //if (transform.parent.name.Contains("Left"))
-        //    GameManager.Instance.ShowHand(true, true);
-        //else
-        //    GameManager.Instance.ShowHand(false, true);
-        //Destroy(this.gameObject);
-        if (grabItem.itemType == ItemType.Magic)
+
+        switch (grabItem.itemType)
         {
-            Destroy(this.gameObject);
-            GameManager.Instance.ItemRest();
-        }
-        else
-        {
-            //grabItem.ChangeMaterial(false);
+            case ItemType.Magic:
+                Destroy(this.gameObject);
+                GameManager.Instance.ItemRest();
+                break;
+            case ItemType.Sword:
+                GameManager.Instance.ChangeMaterial(false, 1);
+                break;
+            case ItemType.Shield:
+                GameManager.Instance.ChangeMaterial(false, 2);
+                break;
+            default:
+                break;
         }
     }
 }

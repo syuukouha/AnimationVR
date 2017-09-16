@@ -36,10 +36,10 @@ public class Player : MonoBehaviour
         if (!isAttacking)
         {
             isAttacking = true;
-            EnemyManager.Instance.Damage();
+            if (PlayerID != 2)
+                EnemyManager.Instance.Damage();
             transform.Find("Attack").gameObject.SetActive(true);
             transform.Find("Idle").gameObject.SetActive(false);
-
             audioSource.PlayOneShot(AttackClip);
             yield return new WaitForSeconds(3.0f);
             transform.Find("Attack").gameObject.SetActive(false);
@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
     {
         GetComponent<Rigidbody>().isKinematic = false;
         transform.Find("DeathCollider").gameObject.SetActive(true);
-        Destroy(this.gameObject, 5f);
+        Destroy(this.gameObject, 3f);
     }
 
 }

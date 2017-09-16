@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class Enemy : MonoBehaviour {
     public AudioClip AttackClip;
+    public int EnemyID;
     private AudioSource audioSource;
     private bool isDead = false;
     private bool isAttack = false;
@@ -46,7 +47,8 @@ public class Enemy : MonoBehaviour {
     IEnumerator ChangePanel()
     {
         isAttack = true;
-        GameManager.Instance.PlayerDamage();    
+        if (EnemyID != 0)
+            GameManager.Instance.PlayerDamage();   
         transform.Find("Attack").gameObject.SetActive(true);
         transform.Find("Idle").gameObject.SetActive(false);
         yield return new WaitForSeconds(3.0f);
@@ -55,5 +57,4 @@ public class Enemy : MonoBehaviour {
         EnemyManager.Instance.TimerStart = true;
         isAttack = false;
     }
-
 }

@@ -21,16 +21,6 @@ public class GrabItem : VRTK_InteractableObject
     private VRTK_ControllerReference controllerReference;
     private Vector3 dropPosition;
     private Quaternion dropRotation;
-    //private bool canUse;
-    //public bool Reset;
-
-    //public bool CanUse
-    //{
-    //    get
-    //    {
-    //        return canUse;
-    //    }
-    //}
 
     private void Start()
     {
@@ -44,7 +34,6 @@ public class GrabItem : VRTK_InteractableObject
     public override void Grabbed(VRTK_InteractGrab grabbingObject)
     {
         base.Grabbed(grabbingObject);
-        //canUse = true;
         controllerReference = VRTK_ControllerReference.GetControllerReference(grabbingObject.controllerEvents.gameObject);
         if (grabbingObject.name.Contains("Left"))
             GameManager.Instance.ShowHand(true, false);

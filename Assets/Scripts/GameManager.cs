@@ -17,10 +17,10 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector]
     public bool IsShieldGrabbed;
     public bool IsDeath;
-    public int MagicPower = 0;
     public bool isResetItem = false;
     public Material[] Normals;
     public Material[] Fades;
+    public int MagicPower = 0;
 
 
     private GrabItem[] grabItems = new GrabItem[3];
@@ -91,7 +91,6 @@ public class GameManager : Singleton<GameManager>
     public IEnumerator Victory()
     {
         yield return new WaitForSeconds(4f);
-        yield return new WaitForSeconds(3f);
         SoundManager.Instance.PlaySE(ResourcesManager.Instance.GetAsset("Sounds/Victory") as AudioClip);
         StartCoroutine(ReStart());
     }
@@ -139,6 +138,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (grabItems[index] == null)
             return;
+        ChangeMaterial(true, index);
         isResetItem = true;
     }
     public void PlayerDamage()
@@ -158,28 +158,25 @@ public class GameManager : Singleton<GameManager>
             item.transform.DOShakeRotation(0.5f);
         }
     }
-    public void ChangeMaterial(bool isEnable)
+    public void ChangeMaterial(bool isEnable,int index)
     {
-        //switch (itemType)
-        //{
-        //    case ItemType.Magic:
-        //        break;
-        //    case ItemType.Sword:
-        //        if (isEnable)
-        //            GetComponentInChildren<MeshRenderer>().material = normalMaterial;
-        //        else
-        //            GetComponentInChildren<MeshRenderer>().material = FadeMaterial;
-        //        break;
-        //    case ItemType.Shield:
-        //        if (isEnable)
-        //            GetComponent<MeshRenderer>().material = normalMaterial;
-        //        else
-        //            GetComponent<MeshRenderer>().material = FadeMaterial;
-        //        break;
-        //    default:
-        //        break;
-        //}
-        
+        switch (index)
+        {
+            case 1:
+                if (isEnable)
+                    grabItems[index].GetComponentInChildren<MeshRenderer>().material = Normals[0];
+                else
+                    grabItems[index].GetComponentInChildren<MeshRenderer>().material = Fades[0];
+                break;
+            case 2:
+                if (isEnable)
+                    grabItems[index].GetComponent<MeshRenderer>().material = Normals[1];
+                else
+                    grabItems[index].GetComponent<MeshRenderer>().material = Fades[1];
+                break;
+            default:
+                break;
+        }
     }
 
 }

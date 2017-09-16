@@ -7,7 +7,7 @@ public class EnemyManager : Singleton<EnemyManager>
     public GameObject[] Goblins;
     public GameObject[] Humans;
     public GameObject[] Wolfs;
-    public GameObject[] Dragon;
+    public GameObject Dragon;
     [HideInInspector]
     public bool IsDeath;
 
@@ -17,9 +17,9 @@ public class EnemyManager : Singleton<EnemyManager>
     private bool timerStart = false;
     private float timer = 0;
     private float attackTimer = 5.0f;
-    private int index;
     private int enemyID = 0;
     private bool isSpawn = false;
+    public int MagicPower;
 
     public int EnemyID
     {
@@ -84,7 +84,7 @@ public class EnemyManager : Singleton<EnemyManager>
                     StartCoroutine(SpawnEnemy(Wolfs));
                     break;
                 case 3:
-                    StartCoroutine(SpawnEnemy(Dragon));
+
                     break;
                 default:
                     break;
@@ -96,7 +96,21 @@ public class EnemyManager : Singleton<EnemyManager>
         {
             timerStart = false;
             timer = 0;
-            Attack();
+            if (Random.Range(0, 2) > 0)
+            {
+                enemys[0].Attack();
+                GameObject effect = Instantiate(ResourcesManager.Instance.GetAsset("Effects/DefenceEnemy") as GameObject);
+                effect.transform.position = enemys[0].transform.position;
+                Destroy(effect, 3f);
+            }
+            else
+            {
+                enemys[2].Attack();
+                GameObject effect = Instantiate(ResourcesManager.Instance.GetAsset("Effects/AttackEnemy") as GameObject);
+                effect.transform.position = enemys[0].transform.position;
+                effect.transform.DOMoveX(effect.transform.position.x - 10f, 1f);
+                Destroy(effect, 3f);
+            }
         }
 
         if (HP <= 0)
@@ -112,14 +126,13 @@ public class EnemyManager : Singleton<EnemyManager>
             timerStart = false;
             enemyID += 1;
         }
+        if(MagicPower >= 2)
+        {
+            enemys[1].Attack();
+            GameObject effect = Instantiate(ResourcesManager.Instance.GetAsset("Effects/AttackEnemy") as GameObject);
+            Destroy(effect, 3f);
+        }
 
-    }
-    public void Attack()
-    {
-        enemys[index].Attack();
-        index++;
-        if (index >= enemys.Length)
-            index = 0;
     }
     private IEnumerator SpawnEnemy(GameObject[] go)
     {
@@ -135,7 +148,7 @@ public class EnemyManager : Singleton<EnemyManager>
                 IsDeath = false;
             }
         }
-        index = 0;
+        MagicPower = 0;
     }
     public void Damage()
     {
