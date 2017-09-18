@@ -8,19 +8,19 @@ public class EnemyManager : Singleton<EnemyManager>
     public GameObject[] Humans;
     public GameObject[] Wolfs;
     public GameObject Dragon;
+    public GameObject[] EnemyHPHearts;
     [HideInInspector]
     public bool IsDeath;
 
     private Enemy[] enemys;
-    private int HP = 5;
-
-    private bool timerStart;
+    private int hp = 5;
+    private bool enemyTimerStart;
     private float timer = 0;
     private float attackTimer = 5.0f;
     private int enemyID = 0;
     private bool isSpawn;
     public int MagicPower;
-    public bool isDamage;
+    private Dragon dragon;
 
     public int EnemyID
     {
@@ -39,12 +39,12 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         get
         {
-            return timerStart;
+            return enemyTimerStart;
         }
 
         set
         {
-            timerStart = value;
+            enemyTimerStart = value;
         }
     }
 
@@ -61,19 +61,31 @@ public class EnemyManager : Singleton<EnemyManager>
         }
     }
 
+    public int HP
+    {
+        get
+        {
+            return hp;
+        }
+
+        set
+        {
+            hp = value;
+        }
+    }
+
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         isSpawn = false;
         IsDeath = false;
-        isDamage = false;
-        timerStart = false;
-	}
-	
-	// Update is called once per frame
-	void Update ()
+        enemyTimerStart = false;
+    }
+
+    // Update is called once per frame
+    void Update()
     {
-        if(isSpawn)
+        if (isSpawn)
         {
             isSpawn = false;
             switch (enemyID)
@@ -88,17 +100,17 @@ public class EnemyManager : Singleton<EnemyManager>
                     StartCoroutine(SpawnEnemy(Wolfs));
                     break;
                 case 3:
-
+                    SpawnDragon();
                     break;
                 default:
                     break;
             }
         }
-        if (timerStart)
+        if (enemyTimerStart)
             timer += Time.deltaTime;
-        if(timer>=attackTimer)
+        if (timer >= attackTimer)
         {
-            timerStart = false;
+            enemyTimerStart = false;
             timer = 0;
             if (Random.Range(0, 2) > 0)
             {
@@ -115,36 +127,36 @@ public class EnemyManager : Singleton<EnemyManager>
                     return;
                 enemys[2].Attack();
                 GameObject effect = Instantiate(ResourcesManager.Instance.GetAsset("Effects/AttackEnemy") as GameObject);
-                effect.transform.position = enemys[0].transform.position;
-                effect.transform.DOMoveX(effect.transform.position.x - 10f, 1f);
+                effect.transform.position = enemys[2].transform.position;
                 Destroy(effect, 3f);
             }
         }
 
-        if (HP <= 0)
+        if (hp <= 0 && !IsDeath)
         {
-            HP = 5;
+            hp = 0;
             IsDeath = true;
-            for (int i = 0; i < enemys.Length; i++)
-            {
-                enemys[i].Dead();
-            }
-            if (enemyID != 3)
-                StartCoroutine(StageController.Instance.ChangeStage());
-            timerStart = false;
-            enemyID += 1;
-        }
-        if(MagicPower >= 2)
-        {
-            MagicPower = 0;
-            enemys[1].Attack();
-            GameObject effect = Instantiate(ResourcesManager.Instance.GetAsset("Effects/AttackEnemy") as GameObject);
-            Destroy(effect, 3f);
-        }
 
+            if (enemyID == 3)
+            {
+                dragon.Dead();
+            }
+            else
+            {
+                for (int i = 0; i < enemys.Length; i++)
+                {
+                    enemys[i].Dead();
+                }
+                StartCoroutine(StageController.Instance.ChangeStage());
+                enemyTimerStart = false;
+                enemyID += 1;
+            }
+        }
     }
     private IEnumerator SpawnEnemy(GameObject[] go)
     {
+        hp = 5;
+        StartCoroutine(InitHPHeart());
         enemys = new Enemy[go.Length];
         for (int i = 0; i < go.Length; i++)
         {
@@ -153,7 +165,7 @@ public class EnemyManager : Singleton<EnemyManager>
             if (i == go.Length - 1)
             {
                 yield return new WaitForSeconds(1f);
-                timerStart = true;
+                enemyTimerStart = true;
                 IsDeath = false;
                 GameManager.Instance.ClearAllTemp();
             }
@@ -162,18 +174,82 @@ public class EnemyManager : Singleton<EnemyManager>
     }
     public void Damage()
     {
-        if (enemys[0].IsAttack)
-        {
-            isDamage = false;
+        if (IsDeath)
             return;
-        }
-        isDamage = true;
-        HP -= 1;
-        for (int i = 0; i < enemys.Length; i++)
+        if (enemyID == 3)
         {
-            enemys[i].transform.DOShakePosition(0.5f);
-            enemys[i].transform.DOShakeRotation(0.5f);
+            GameManager.Instance.MagicPower += 1;
+            hp -= 1;
+            EnemyHPHearts[hp].SetActive(false);
+            dragon.transform.DOShakePosition(0.5f, 0.5f);
+        }
+        else
+        {
+            if (enemys[0].IsAttack)
+                return;
+            GameManager.Instance.MagicPower += 1;
+            hp -= 1;
+            EnemyHPHearts[hp].SetActive(false);
+            for (int i = 0; i < enemys.Length; i++)
+            {
+                enemys[i].transform.DOShakePosition(0.5f, 0.5f);
+            }
+        }
+    }
+    public void MagicDamage()
+    {
+        if (IsDeath)
+            return;
+        int index = hp;
+        hp -= 2;
+        if (index > 1)
+        {
+            EnemyHPHearts[index - 1].SetActive(false);
+            EnemyHPHearts[hp].SetActive(false);
+        }
+        else
+        {
+            EnemyHPHearts[index - 1].SetActive(false);
+        }
+
+        if (enemyID == 3)
+        {
+            dragon.transform.DOShakePosition(0.5f, 0.5f);
+        }
+        else
+        {
+            for (int i = 0; i < enemys.Length; i++)
+            {
+                enemys[i].transform.DOShakePosition(0.5f, 0.5f);
+            }
         }
 
     }
+    public void MagicAttack()
+    {
+        MagicPower = 0;
+        GameManager.Instance.MagicDamage();
+        enemys[1].Attack();
+        GameObject effect = Instantiate(ResourcesManager.Instance.GetAsset("Effects/MagicEnemy") as GameObject);
+        Destroy(effect, 5f);
+    }
+    IEnumerator InitHPHeart()
+    {
+        for (int i = 0; i < hp; i++)
+        {
+            if (!EnemyHPHearts[i].activeInHierarchy)
+                EnemyHPHearts[i].SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+    void SpawnDragon()
+    {
+        hp = 8;
+        StartCoroutine(InitHPHeart());
+        dragon = Instantiate(Dragon).GetComponent<Dragon>();
+        IsDeath = false;
+        GameManager.Instance.ClearAllTemp();
+        MagicPower = 0;
+    }
+
 }

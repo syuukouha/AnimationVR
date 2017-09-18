@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using VRTK;
 public class GameManager : Singleton<GameManager>
 {
-    public int HP = 35;
+    private int playerHP;
     public Light PointLight;
     public Light SpotLight;
     public GameObject LeftHand;
@@ -26,7 +26,8 @@ public class GameManager : Singleton<GameManager>
     private List<Player> playerList = new List<Player>();
     private bool isGameStart;
     private bool isInit;
-    public bool isDamage;
+    public GameObject[] PlayerHPHearts;
+    public GameObject Crown;
     // Use this for initialization
     void Start ()
     {
@@ -36,7 +37,7 @@ public class GameManager : Singleton<GameManager>
         IsDeath = false;
         isInit = true;
         IsCanAttack = false;
-        isDamage = false;
+        playerHP = 7;
     }
 
     // Update is called once per frame
@@ -66,7 +67,6 @@ public class GameManager : Singleton<GameManager>
             ShowHand(true, true);
             ShowHand(false, true);
         }
-        Debug.Log(MagicPower);
     }
 
     public void ItemRest()
@@ -96,6 +96,7 @@ public class GameManager : Singleton<GameManager>
     }
     public IEnumerator Victory()
     {
+        Instantiate(Crown);
         yield return new WaitForSeconds(4f);
         SoundManager.Instance.PlaySE(ResourcesManager.Instance.GetAsset("Sounds/Victory") as AudioClip);
         StartCoroutine(ReStart());
@@ -137,6 +138,7 @@ public class GameManager : Singleton<GameManager>
         Title.transform.DOMoveY(24.0f, 10.0f).OnComplete(() => {
             EnemyManager.Instance.IsSpawn = true;
             StartCoroutine(SpawnPlayer());
+            StartCoroutine(InitHPHeart());
             Title.SetActive(false);
         });
     }
@@ -149,23 +151,59 @@ public class GameManager : Singleton<GameManager>
     }
     public void PlayerDamage()
     {
+        if (IsDeath)
+            return;
+        if(EnemyManager.Instance.EnemyID == 3)
+        {
+            playerHP -= 1;
+            PlayerHPHearts[playerHP].SetActive(false);
+            foreach (var item in playerList)
+            {
+                if (playerHP <= 0)
+                {
+                    playerHP = 0;
+                    IsDeath = true;
+                    item.Dead();
+                }
+                item.transform.DOShakePosition(0.5f, 0.5f);
+            }
+        }
+        else
+        {
+            if (playerList[1].IsAttacking)
+                return;
+            EnemyManager.Instance.MagicPower += 1;
+            playerHP -= 1;
+            PlayerHPHearts[playerHP].SetActive(false);
+            foreach (var item in playerList)
+            {
+                if (playerHP <= 0)
+                {
+                    playerHP = 0;
+                    IsDeath = true;
+                    item.Dead();
+                }
+                item.transform.DOShakePosition(0.5f, 0.5f);
+            }
+        }   
+    }
+    public void MagicDamage()
+    {
+        if (IsDeath)
+            return;
+        int index = playerHP;
+        playerHP -= 2;
+        PlayerHPHearts[index-1].SetActive(false);
+        PlayerHPHearts[playerHP].SetActive(false);
         foreach (var item in playerList)
         {
-            if (item.PlayerID == 2 && item.IsAttacking)
+            if (playerHP <= 0)
             {
-                isDamage = false;
-                return;
-            }
-            isDamage = true;
-            HP -= 1;
-            if (HP <= 0)
-            {
-                HP = 0;
+                playerHP = 0;
                 IsDeath = true;
                 item.Dead();
             }
-            item.transform.DOShakePosition(0.5f);
-            item.transform.DOShakeRotation(0.5f);
+            item.transform.DOShakePosition(0.5f,0.5f);
         }
     }
     public void ChangeMaterial(bool isEnable,int index)
@@ -206,7 +244,24 @@ public class GameManager : Singleton<GameManager>
                 item.ClearTemp();
         }
     }
-
+    IEnumerator InitHPHeart()
+    {
+        for (int i = 0; i < playerHP; i++)
+        {
+            if (!PlayerHPHearts[i].activeInHierarchy)
+                PlayerHPHearts[i].SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+    public void PlusHP(int hp)
+    {
+        playerHP += hp;
+        if(playerHP>7)
+        {
+            playerHP = 7;
+        }
+        StartCoroutine(InitHPHeart());
+    }
 }
 
 

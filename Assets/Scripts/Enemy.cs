@@ -42,22 +42,24 @@ public class Enemy : MonoBehaviour {
         isDead = true;
         GetComponent<Rigidbody>().isKinematic = false;
         transform.Find("DeathCollider").gameObject.SetActive(true);
-        Destroy(this.gameObject, 5f);
+        Destroy(this.gameObject, 3f);
     }
     IEnumerator ChangePanel()
     {
         isAttack = true;
-        if (EnemyID != 0)
+        if (EnemyID == 1)
+        {
             GameManager.Instance.PlayerDamage();
-        if (EnemyID == 1 && GameManager.Instance.isDamage)
-            EnemyManager.Instance.MagicPower += 1;
+        }
         transform.Find("Attack").gameObject.SetActive(true);
         transform.Find("Idle").gameObject.SetActive(false);
         yield return new WaitForSeconds(3.0f);
         transform.Find("Attack").gameObject.SetActive(false);
         transform.Find("Idle").gameObject.SetActive(true);
-        
-        EnemyManager.Instance.TimerStart = true;
         isAttack = false;
+        if (EnemyManager.Instance.MagicPower >= 3)
+            EnemyManager.Instance.MagicAttack();
+        else
+            EnemyManager.Instance.TimerStart = true;
     }
 }

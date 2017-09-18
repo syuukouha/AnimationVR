@@ -84,7 +84,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
                 {
                     distance += Mathf.Abs(Vector3.Distance(vectorTemp[i], vectorTemp[i + 1]));
                 }
-                if ((int)(distance * 100) > 50)
+                if ((int)(distance * 100) > 45)
                 {
                     isShake = true;
                 }
@@ -98,7 +98,7 @@ public class ItemGrabAttach : VRTK_BaseGrabAttach
                     {
                         distance += Mathf.Abs(Vector3.Distance(vectorTemp[i], vectorTemp[i + 1]));
                     }
-                    if ((int)(distance * 100) > 10)
+                    if ((int)(distance * 100) > 8)
                     {
                         isShake = true;
                     }

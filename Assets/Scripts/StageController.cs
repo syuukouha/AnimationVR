@@ -22,6 +22,7 @@ public class StageController : Singleton<StageController>
             int stageIndex = EnemyManager.Instance.EnemyID;
             SoundManager.Instance.PlayBGM(BGM[stageIndex]);
             EnemyManager.Instance.IsSpawn = true;
+            GameManager.Instance.PlusHP(3);
             if (stageIndex == 3)
                 BigExplosionEffect.SetActive(true);
         });
