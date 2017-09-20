@@ -13,13 +13,10 @@ public class GameInit : MonoBehaviour,IResourceListener
     }
     private void Awake()
     {
-        ResourcesManager.Instance.Load("Sounds/KinghtAttack", typeof(AudioClip), this);
+        ResourcesManager.Instance.Load("Sounds/toujyou_SE", typeof(AudioClip), this);
+        ResourcesManager.Instance.Load("Sounds/start_SE", typeof(AudioClip), this);
         ResourcesManager.Instance.Load("Sounds/PlayerDeath", typeof(AudioClip), this);
-        ResourcesManager.Instance.Load("Sounds/PlayerDamage1", typeof(AudioClip), this);
-        ResourcesManager.Instance.Load("Sounds/PlayerDamage2", typeof(AudioClip), this);
         ResourcesManager.Instance.Load("Sounds/Victory", typeof(AudioClip), this);
-        ResourcesManager.Instance.Load("Sounds/Defence", typeof(AudioClip), this);
-        ResourcesManager.Instance.Load("Sounds/Start", typeof(AudioClip), this);
         ResourcesManager.Instance.Load("Characters/Knight", typeof(GameObject), this);
         ResourcesManager.Instance.Load("Characters/Sword", typeof(GameObject), this);
         ResourcesManager.Instance.Load("Characters/Wizard", typeof(GameObject), this);
@@ -35,6 +32,7 @@ public class GameInit : MonoBehaviour,IResourceListener
         ResourcesManager.Instance.Load("Effects/AttackEnemy", typeof(GameObject), this);
         ResourcesManager.Instance.Load("Effects/DefenceEnemy", typeof(GameObject), this);
         ResourcesManager.Instance.Load("Effects/MagicEnemy", typeof(GameObject), this);
-
+        ResourcesManager.Instance.Load("Effects/MagicEnemy", typeof(GameObject), this);
+        ResourcesManager.Instance.Load("Effects/FlamesParticleEffect", typeof(GameObject), this);
     }
 }

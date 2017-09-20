@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
 {
     public int PlayerID;
     public AudioClip AttackClip;
-    public AudioClip DeathClip;
     private AudioSource audioSource;
     private bool isAttacking;
 
@@ -30,6 +29,7 @@ public class Player : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         transform.DORotate(new Vector3(90f, 180f, 0f), 1f);
         isAttacking = false;
+        SoundManager.Instance.PlaySE(ResourcesManager.Instance.GetAsset("Sounds/toujyou_SE") as AudioClip);
     }
     IEnumerator Attack()
     {

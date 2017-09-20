@@ -4,17 +4,16 @@ using UnityEngine;
 using DG.Tweening;
 public class Dragon : MonoBehaviour
 {
-    public GameObject FireAttackEffect;
-    public GameObject NormalAttackEffect;
-
     private bool isTimerStart;
     private AudioSource audioSource;
     private bool isDead = false;
+    public AudioClip NormalAttackClip;
+    public AudioClip FireAttackClip;
 
     private float timer;
     private float attackTimer;
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         timer = 0;
         attackTimer = 5;
@@ -24,9 +23,9 @@ public class Dragon : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
-        if (isDead)
+        if (isDead || GameManager.Instance.IsDeath)
             return;
         if (isTimerStart)
             timer += Time.deltaTime;
@@ -69,11 +68,14 @@ public class Dragon : MonoBehaviour
     }
     IEnumerator NormalAttack()
     {
+        audioSource.PlayOneShot(NormalAttackClip);
+        GameObject effect = Instantiate(ResourcesManager.Instance.GetAsset("Effects/AttackEnemy") as GameObject);
+        effect.transform.position = this.transform.position;
+        Destroy(effect, 3f);
         GameManager.Instance.PlayerDamage();
         transform.Find("FireAttack").gameObject.SetActive(false);
         transform.Find("NormalAttack").gameObject.SetActive(true);
         transform.Find("Idle").gameObject.SetActive(false);
-        //audioSource.PlayOneShot(AttackClip);
         yield return new WaitForSeconds(3.0f);
         transform.Find("NormalAttack").gameObject.SetActive(false);
         transform.Find("FireAttack").gameObject.SetActive(false);
@@ -82,11 +84,14 @@ public class Dragon : MonoBehaviour
     }
     IEnumerator FireAttack()
     {
+        audioSource.PlayOneShot(FireAttackClip);
+        GameObject fire = Instantiate(ResourcesManager.Instance.GetAsset("Effects/FlamesParticleEffect") as GameObject);
+        fire.transform.DOMove(new Vector3(-6f, 0, transform.position.z), 1f);
+        Destroy(fire, 1f);
         GameManager.Instance.MagicDamage();
         transform.Find("FireAttack").gameObject.SetActive(true);
         transform.Find("NormalAttack").gameObject.SetActive(false);
         transform.Find("Idle").gameObject.SetActive(false);
-        //audioSource.PlayOneShot(AttackClip);
         yield return new WaitForSeconds(3.0f);
         transform.Find("NormalAttack").gameObject.SetActive(false);
         transform.Find("FireAttack").gameObject.SetActive(false);
@@ -97,8 +102,10 @@ public class Dragon : MonoBehaviour
     {
         isDead = true;
         isTimerStart = false;
-        transform.DOShakePosition(20.0f, 0.1f);
-        transform.DOMoveY(-5f, 20.0f);
-        Destroy(this.gameObject, 20.0f);
+        transform.DOShakePosition(10.0f, 0.1f);
+        transform.DOMoveY(-5f, 10.0f).OnComplete(()=> {
+            GameManager.Instance.Victory();
+        });
+        Destroy(this.gameObject, 10.0f);
     }
 }

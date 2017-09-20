@@ -28,8 +28,9 @@ public class Enemy : MonoBehaviour {
     {
         audioSource = GetComponent<AudioSource>();
         transform.DORotate(new Vector3(90f, 180f, 0f), 1f);
-	}
-	
+        SoundManager.Instance.PlaySE(ResourcesManager.Instance.GetAsset("Sounds/toujyou_SE") as AudioClip);
+    }
+
     public void Attack()
     {
         if (isDead)
@@ -47,6 +48,7 @@ public class Enemy : MonoBehaviour {
     IEnumerator ChangePanel()
     {
         isAttack = true;
+        audioSource.PlayOneShot(AttackClip);
         if (EnemyID == 1)
         {
             GameManager.Instance.PlayerDamage();

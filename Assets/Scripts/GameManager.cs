@@ -28,6 +28,7 @@ public class GameManager : Singleton<GameManager>
     private bool isInit;
     public GameObject[] PlayerHPHearts;
     public GameObject Crown;
+    private VRTK_InteractableObject crown;
     // Use this for initialization
     void Start ()
     {
@@ -67,6 +68,12 @@ public class GameManager : Singleton<GameManager>
             ShowHand(true, true);
             ShowHand(false, true);
         }
+        if(crown !=null && crown.IsGrabbed())
+        {
+            PointLight.DOIntensity(0, 10.0f);
+            SpotLight.DOIntensity(0, 10.0f);
+            StartCoroutine(ReStart());
+        }
     }
 
     public void ItemRest()
@@ -94,11 +101,25 @@ public class GameManager : Singleton<GameManager>
         EnabledItem(1);
         EnabledItem(2);
     }
-    public IEnumerator Victory()
+    public void Victory()
     {
-        Instantiate(Crown);
-        yield return new WaitForSeconds(4f);
-        SoundManager.Instance.PlaySE(ResourcesManager.Instance.GetAsset("Sounds/Victory") as AudioClip);
+        crown = Instantiate(Crown).GetComponent<VRTK_InteractableObject>();
+        for (int i = 0; i < grabItems.Length; i++)
+        {
+            if(grabItems[i] !=null)
+                Destroy(grabItems[i].gameObject);
+        }
+        ShowHand(true, true);
+        ShowHand(false, true);
+        crown.transform.DOMove(new Vector3(0, 1, 0.5f), 5f);
+        crown.transform.DOScale(Vector3.one, 5f);
+        SoundManager.Instance.PlaySE(ResourcesManager.Instance.GetAsset("Sounds/Victory") as AudioClip);     
+    }
+    private void GameOver()
+    {
+        SoundManager.Instance.PlaySE(ResourcesManager.Instance.GetAsset("Sounds/PlayerDeath") as AudioClip);
+        PointLight.DOIntensity(0, 3.0f);
+        SpotLight.DOIntensity(0, 3.0f);
         StartCoroutine(ReStart());
     }
     public IEnumerator ReStart()
@@ -134,6 +155,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (isGameStart)
             return;
+        SoundManager.Instance.PlaySE(ResourcesManager.Instance.GetAsset("Sounds/start_SE") as AudioClip);
         isGameStart = true;
         Title.transform.DOMoveY(24.0f, 10.0f).OnComplete(() => {
             EnemyManager.Instance.IsSpawn = true;
@@ -164,6 +186,7 @@ public class GameManager : Singleton<GameManager>
                     playerHP = 0;
                     IsDeath = true;
                     item.Dead();
+                    GameOver();
                 }
                 item.transform.DOShakePosition(0.5f, 0.5f);
             }
@@ -182,6 +205,7 @@ public class GameManager : Singleton<GameManager>
                     playerHP = 0;
                     IsDeath = true;
                     item.Dead();
+                    GameOver();
                 }
                 item.transform.DOShakePosition(0.5f, 0.5f);
             }
@@ -194,7 +218,7 @@ public class GameManager : Singleton<GameManager>
         int index = playerHP;
         playerHP -= 2;
         PlayerHPHearts[index-1].SetActive(false);
-        PlayerHPHearts[playerHP].SetActive(false);
+
         foreach (var item in playerList)
         {
             if (playerHP <= 0)
@@ -202,6 +226,7 @@ public class GameManager : Singleton<GameManager>
                 playerHP = 0;
                 IsDeath = true;
                 item.Dead();
+                GameOver();
             }
             item.transform.DOShakePosition(0.5f,0.5f);
         }
