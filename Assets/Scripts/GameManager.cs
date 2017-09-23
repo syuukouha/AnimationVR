@@ -70,6 +70,7 @@ public class GameManager : Singleton<GameManager>
         }
         if(crown !=null && crown.IsGrabbed())
         {
+            crown = null;
             PointLight.DOIntensity(0, 10.0f);
             SpotLight.DOIntensity(0, 10.0f);
             StartCoroutine(ReStart());
@@ -193,7 +194,7 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
-            if (playerList[1].IsAttacking)
+            if (playerList[0].IsAttacking)
                 return;
             EnemyManager.Instance.MagicPower += 1;
             playerHP -= 1;
@@ -217,8 +218,15 @@ public class GameManager : Singleton<GameManager>
             return;
         int index = playerHP;
         playerHP -= 2;
-        PlayerHPHearts[index-1].SetActive(false);
-
+        if (index > 1)
+        {
+            PlayerHPHearts[index - 1].SetActive(false);
+            PlayerHPHearts[playerHP].SetActive(false);
+        }
+        else
+        {
+            PlayerHPHearts[playerHP].SetActive(false);
+        }
         foreach (var item in playerList)
         {
             if (playerHP <= 0)
